@@ -1,6 +1,6 @@
 import requests
 
-url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/3"
+url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/1"
 
 payload = {}
 headers = {
