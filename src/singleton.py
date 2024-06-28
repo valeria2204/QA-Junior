@@ -42,3 +42,10 @@ class Singleton:
     def get_random_alphanumeric(length):
         characters = string.ascii_letters + string.digits
         return ''.join(random.choices(characters, k=length))
+
+
+    @staticmethod
+    def get_token_no_valid():
+        file = open(os.path.dirname(os.path.abspath(__file__)) + '\\json_files\\credentials.json')
+        data = json.load(file)
+        return data['token_no_valid']
