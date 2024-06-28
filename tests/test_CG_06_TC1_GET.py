@@ -3,7 +3,7 @@ import requests
 
 # URL base de la API
 base_url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups"
-# Token de acceso (reemplaza 'your_access_token' con tu token válido)
+# Token de acceso
 access_token = "psz0zk8oqeetwpgt5i0x91a1jprqfgch"
 
 
@@ -25,6 +25,6 @@ def test_get_customer_group_success():
     assert "code" in response_data
     assert "tax_class_id" in response_data
     assert "tax_class_name" in response_data
-    # Verifica que 'extension_attributes' esté presente en caso de que exista
+
     if "extension_attributes" in response_data:
         assert response_data["extension_attributes"] is not None
