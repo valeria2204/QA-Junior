@@ -4,7 +4,7 @@ import pytest
 from src.singleton import Singleton
 
 
-def test_C2TC7_POST_validar_schema_crear_nueva_cuenta_customer_solo_con_la_informacion_valida_requerida(
+def test_C2TC7_POST_validar_esquema_crear_nueva_cuenta_customer_solo_con_la_informacion_valida_requerida(
         get_body_of_create_a_customer_with_basic_information):
     response_data = get_body_of_create_a_customer_with_basic_information
     schema = Singleton.read_schema_json_file('post_create_customer.json')
@@ -14,7 +14,7 @@ def test_C2TC7_POST_validar_schema_crear_nueva_cuenta_customer_solo_con_la_infor
         pytest.fail(f'JSON schema dont match {err}')
 
 
-def test_C2TC8_POST_validar_schema_crear_nueva_cuenta_customer_con_todo_el_esquema_llenado(get_body_of_create_a_customer_with_full_information):
+def test_C2TC8_POST_validar_esquema_crear_nueva_cuenta_customer_con_todo_el_esquema_llenado(get_body_of_create_a_customer_with_full_information):
     response_data = get_body_of_create_a_customer_with_full_information
     schema = Singleton.read_schema_json_file('post_create_customer_full_information.json')
     try:
