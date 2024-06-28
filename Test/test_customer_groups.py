@@ -4,8 +4,8 @@ import requests
 # URL base para el endpoint de Magento
 BASE_URL = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default/"
 
-# Token de autenticación (reemplazar con un token válido)
-AUTH_TOKEN = "psz0zk8oqeetwpgt5i0x91a1jprqfgch"  # Reemplaza con tu token de autenticación
+# Token de autenticación
+AUTH_TOKEN = "psz0zk8oqeetwpgt5i0x91a1jprqfgch"
 
 # Función para obtener los headers, incluyendo o no el token de autenticación
 def get_headers(include_auth=True):
@@ -114,7 +114,3 @@ def test_regression_store_id_handling_post_update():
     store_id = 1
     response = requests.get(f"{BASE_URL}{store_id}", headers=get_headers())
     assert response.status_code == 200
-
-# Ejecución de las pruebas
-if __name__ == '__main__':
-    pytest.main()
