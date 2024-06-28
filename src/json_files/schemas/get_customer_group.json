@@ -1,0 +1,24 @@
+{
+  "title": "Generated schema for Root",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "number"
+    },
+    "code": {
+      "type": "string"
+    },
+    "tax_class_id": {
+      "type": "number"
+    },
+    "tax_class_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "code",
+    "tax_class_id",
+    "tax_class_name"
+  ]
+}
