@@ -5,7 +5,7 @@ from src.singleton import Singleton
 
 
 @pytest.mark.smoke
-def test_CG9TC1_GET_verificar_si_un_customer_group_no_asignado_un_customer_puede_ser_eliminado(get_token_login):
+def test_CG9TC1_GET_verificar_si_un_customer_group_no_asignado_a_un_customer_puede_ser_eliminado(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/0/permissions"
 
