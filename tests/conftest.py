@@ -41,7 +41,7 @@ def get_body_create_customer(get_token_login):
     return response.json()
 
 @pytest.fixture
-def get_body_customer_group_por_id(get_token_login):
+def get_body_obtain_first_10_customer_groups(get_token_login):
     token = get_token_login
     url = Singleton.get_base_url() + "/rest/V1/customerGroups/search?searchCriteria[currentPage]=1&searchCriteria[pageSize]=10"
     payload = {}
