@@ -1,5 +1,4 @@
 {
-  "title": "Generated schema for Root",
   "type": "object",
   "properties": {
     "items": {
