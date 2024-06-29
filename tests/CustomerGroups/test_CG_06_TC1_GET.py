@@ -1,5 +1,7 @@
 import pytest
 import requests
+import jsonschema
+from src.singleton import Singleton
 
 # URL base de la API
 base_url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups"
@@ -28,3 +30,11 @@ def test_get_customer_group_success():
     if "extension_attributes" in response_data:
         assert response_data["extension_attributes"] is not None
 
+#Validando el esquema del get
+def test_schema_get_customer_group(get_body_customer_group):
+    response_data = get_body_customer_group
+    schema = Singleton.read_schema_json_file('get_customer_group.json')
+    try:
+        jsonschema.validate(instance=response_data, schema=schema)
+    except jsonschema.exceptions.ValidationError as err:
+        pytest.fail(f'JSON schema dont match {err}')
