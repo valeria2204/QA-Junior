@@ -54,3 +54,16 @@ def get_body_obtain_first_10_customer_groups(get_token_login):
 
     assert response.status_code == 200
     return response.json()
+
+
+@pytest.fixture
+def get_body_of_obtain_customer_group_by_id(get_token_login, group_id=1):
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}"
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {get_token_login}',
+    }
+
+    response = requests.get(url, headers=headers, data=payload)
+
+    return response.json()
