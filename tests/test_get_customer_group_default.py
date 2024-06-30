@@ -1,35 +1,13 @@
 import pytest
 import requests
-import jsonschema
 
+from src.assertions.esquema_assertion import assert_validate_schema
+from src.singleton import Singleton
 
-esquema = {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "properties": {
-    "id": {
-      "type": "integer"
-    },
-    "code": {
-      "type": "string"
-    },
-    "tax_class_id": {
-      "type": "integer"
-    },
-    "tax_class_name": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "id",
-    "code",
-    "tax_class_id",
-    "tax_class_name"
-  ]
-}
+RUTA_ESQUEMA = "get_customer_group_default.json"
 
 def test_validar_request_retorna_codigo_200(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {
@@ -41,7 +19,7 @@ def test_validar_request_retorna_codigo_200(get_token_login):
     assert response.status_code == 200
 
 def test_validar_esquema(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {
@@ -51,14 +29,11 @@ def test_validar_esquema(get_token_login):
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    try:
-        jsonschema.validate(instance=response.json(), schema=esquema)
-    except jsonschema.exceptions.ValidationError as err:
-        assert False
-
+    esquema = Singleton.read_schema_json_file(RUTA_ESQUEMA)
+    assert assert_validate_schema(response.json(), esquema)
 
 def test_verificar_codigo_respuesta_401_token_invalido(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {
@@ -70,7 +45,7 @@ def test_verificar_codigo_respuesta_401_token_invalido(get_token_login):
     assert response.status_code == 401
 
 def test_verificar_respuesta_sin_enviar_token(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {}
@@ -80,7 +55,7 @@ def test_verificar_respuesta_sin_enviar_token(get_token_login):
     assert response.status_code == 401
 
 def test_validar_el_campo_id(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {
@@ -90,12 +65,12 @@ def test_validar_el_campo_id(get_token_login):
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    res = response.json()
-    assert isinstance(res["id"], int)
-    assert res["id"] >= 0
+    response_data = response.json()
+    assert isinstance(response_data["id"], int)
+    assert response_data["id"] >= 0
 
 def test_validar_el_campo_tax_class_id(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {
@@ -105,12 +80,12 @@ def test_validar_el_campo_tax_class_id(get_token_login):
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    res = response.json()
-    assert isinstance(res["tax_class_id"], int)
-    assert res["tax_class_id"] >= 0
+    response_data = response.json()
+    assert isinstance(response_data["tax_class_id"], int)
+    assert response_data["tax_class_id"] >= 0
 
 def test_validar_que_el_campo_code_sea_string(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {
@@ -120,12 +95,12 @@ def test_validar_que_el_campo_code_sea_string(get_token_login):
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    res = response.json()
-    assert isinstance(res["code"], str)
-    assert len(res["code"]) >= 0
+    response_data = response.json()
+    assert isinstance(response_data["code"], str)
+    assert len(response_data["code"]) >= 0
 
 def test_validar_que_el_campo_tax_class_name_sea_string(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
 
     payload = {}
     headers = {
@@ -135,12 +110,12 @@ def test_validar_que_el_campo_tax_class_name_sea_string(get_token_login):
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    res = response.json()
-    assert isinstance(res["tax_class_name"], str)
-    assert len(res["tax_class_name"]) >= 0
+    response_data = response.json()
+    assert isinstance(response_data["tax_class_name"], str)
+    assert len(response_data["tax_class_name"]) >= 0
 
 def test_validar_que_el_un_parametrop_de_consulta_no_afecta_resultado(get_token_login):
-    url = "https://magento2-demo.magebit.com/rest/default/V1/customerGroups/default?code=LoremIpsum"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default?code=LoremIpsum"
 
     payload = {}
     headers = {
@@ -150,5 +125,5 @@ def test_validar_que_el_un_parametrop_de_consulta_no_afecta_resultado(get_token_
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    res = response.json()
-    assert res["id"] == 1
+    response_data = response.json()
+    assert response_data["id"] == 1
