@@ -80,16 +80,15 @@ def get_body_of_create_a_customer_with_full_information(get_token_login):
     return response.json()
 
 @pytest.fixture
-def get_body_customer_group(get_token_login):
+def get_body_of_obtain_customer_group_by_id(group_id, get_token_login):
+
     token = get_token_login
-    url = Singleton.get_base_url() + "/rest/default/V1/customerGroups/default/"
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}"
     payload = {}
     headers = {
-        'Content-Type': 'application/json',
         'Authorization': f'Bearer {token}',
     }
 
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.get(url, headers=headers, data=payload)
 
-    assert response.status_code == 200
     return response.json()

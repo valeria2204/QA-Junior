@@ -13,9 +13,9 @@
                     "items": {"type": "number"}
                 }
             },
-            "additionalProperties": False
+            "additionalProperties": false
         }
     },
     "required": ["id", "code", "tax_class_id", "tax_class_name"],
-    "additionalProperties": False
+    "additionalProperties": false
 }
