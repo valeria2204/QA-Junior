@@ -30,6 +30,5 @@ def test_CG_06_TC1_GET_verificar_obtencion_exitosa_de_un_customer_group_por_id(g
 
 def test_esquema_verificar_obtencion_exitosa_de_un_customer_group_por_id(get_body_of_obtain_customer_group_by_id):
     response_data = get_body_of_obtain_customer_group_by_id
-
     assert_schemas(response_data, 'get_customer_group.json')
 
