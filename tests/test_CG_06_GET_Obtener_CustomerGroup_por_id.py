@@ -1,6 +1,5 @@
 import pytest
 import requests
-import jsonschema
 
 from src.assertions.asserions_schema import assert_schemas
 from src.singleton import Singleton
