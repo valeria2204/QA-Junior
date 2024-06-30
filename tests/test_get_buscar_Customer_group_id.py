@@ -5,7 +5,7 @@ from src.singleton import Singleton
 
 
 @pytest.mark.smoke
-def test_TC11_verificar_respuesta_exitosa(get_token_login):
+def test_CG_05_GET_TC11_verificar_respuesta_exitosa(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
@@ -26,7 +26,7 @@ def test_TC11_verificar_respuesta_exitosa(get_token_login):
 
 
 @pytest.mark.smoke
-def test_TC3_verificar_comportamiento_con_parametros_invalidos(get_token_login):
+def test_CG_05_GET_TC3_verificar_comportamiento_con_parametros_invalidos(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
@@ -47,7 +47,7 @@ def test_TC3_verificar_comportamiento_con_parametros_invalidos(get_token_login):
 
 
 @pytest.mark.regression
-def test_TC7_verificar_mensaje_de_exito(get_token_login):
+def test_CG_05_GET_TC7_verificar_mensaje_de_exito(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
