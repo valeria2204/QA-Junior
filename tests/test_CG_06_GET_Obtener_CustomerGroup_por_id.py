@@ -1,6 +1,8 @@
 import pytest
 import requests
 import jsonschema
+
+from src.assertions.asserions_schema import assert_schemas
 from src.singleton import Singleton
 
 
@@ -28,9 +30,6 @@ def test_CG_06_TC1_GET_verificar_obtencion_exitosa_de_un_customer_group_por_id(g
 
 def test_esquema_verificar_obtencion_exitosa_de_un_customer_group_por_id(get_body_of_obtain_customer_group_by_id):
     response_data = get_body_of_obtain_customer_group_by_id
-    schema = Singleton.read_schema_json_file('get_customer_group.json')
-    try:
-        jsonschema.validate(instance=response_data, schema=schema)
-    except jsonschema.exceptions.ValidationError as err:
-        pytest.fail(f'JSON schema dont match {err}')
+
+    assert_schemas(response_data, 'get_customer_group.json')
 
