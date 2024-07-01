@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from src.assertions.esquema_assertion import assert_validate_schema
+from src.assertions.asserions_schema import assert_schemas
 from src.singleton import Singleton
 
 
@@ -29,8 +29,7 @@ def test_CG2TC2_GET_verificar_esquema_obtencion_exitosa_de_CustomerGroup_por_def
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    esquema = Singleton.read_schema_json_file("get_customer_group.json")
-    assert assert_validate_schema(response.json(), esquema)
+    assert_schemas(response.json(), 'get_customer_group.json')
 
 
 def test_CG2TC3_GET_validar_respuesta_401_al_enviar_un_token_invalido(get_token_login):
