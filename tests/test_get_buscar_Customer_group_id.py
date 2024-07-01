@@ -49,7 +49,7 @@ def test_CG_05_GET_TC3_verificar_que_ningun_customer_group_es_encontrado_con_los
 
 @pytest.mark.smoke
 @pytest.mark.functional
-def test_CG_05_TC2_GET_verificar_respuesta_de_error_cuando_no_tienes_autorizacion():
+def test_CG_05_TC2_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_customer_groups_cuando_no_tienes_autorizacion():
     token = Singleton.get_token_no_valid()
     url = f"{Singleton.get_base_url()}/rest/V1/customerGroups/search?searchCriteria[currentPage]=1&searchCriteria[pageSize]=10"
 
