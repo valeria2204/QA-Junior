@@ -56,3 +56,10 @@ class Singleton:
         file = open(os.path.dirname(os.path.abspath(__file__)) + '\\json_files\\credentials.json')
         data = json.load(file)
         return data['token_no_valid']
+
+
+    @staticmethod
+    def get_token_all_access():
+        file = open(os.path.dirname(os.path.abspath(__file__)) + '\\json_files\\credentials.json')
+        data = json.load(file)
+        return data['token_all_access']
