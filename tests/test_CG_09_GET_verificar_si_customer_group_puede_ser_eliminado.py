@@ -3,7 +3,7 @@ import json
 import pytest
 import requests
 
-from src.assertions.asserions_schema import assert_schemas
+from src.assertions.assertions_schema import assert_schemas
 from src.singleton import Singleton
 from tests.conftest import send_request_of_check_if_non_existent_customer_group_can_be_deleted
 from tests.conftest import send_request_of_check_if_customer_group_can_be_deleted_with_empty_id

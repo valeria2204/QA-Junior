@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-from src.assertions.asserions_schema import assert_schemas
+from src.assertions.assertions_schema import assert_schemas
 from src.assertions.assertions import assert_response_status
 from src.singleton import Singleton
 
