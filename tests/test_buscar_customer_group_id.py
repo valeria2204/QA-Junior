@@ -6,7 +6,7 @@ from src.singleton import Singleton
 
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG_05_TC4_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_customer_group_con_el_metodo_POST(get_token_login):
+def test_CG05TC4_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_customer_group_con_el_metodo_POST(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
@@ -25,7 +25,7 @@ def test_CG_05_TC4_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_
 
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG_05_TC5_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_customer_group_con_el_metodo_PUT(get_token_login):
+def test_CG05TC5_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_customer_group_con_el_metodo_PUT(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
@@ -44,7 +44,7 @@ def test_CG_05_TC5_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_
 
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG_05_TC6_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_customer_group_con_el_metodo_DELETE(get_token_login):
+def test_CG05TC6_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_customer_group_con_el_metodo_DELETE(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
