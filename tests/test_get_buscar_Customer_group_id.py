@@ -5,7 +5,9 @@ from src.singleton import Singleton
 
 
 @pytest.mark.smoke
-def test_CG_05_GET_TC11_verificar_respuesta_exitosa(get_token_login):
+@pytest.mark.functional
+@pytest.mark.regression
+def test_CG_05_GET_TC11_GET_verificar_que_el_primer_customer_group_es_encontrado_por_los_criterios_de_busqueda_field_value_condition_type(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
@@ -26,7 +28,7 @@ def test_CG_05_GET_TC11_verificar_respuesta_exitosa(get_token_login):
 
 
 @pytest.mark.smoke
-def test_CG_05_GET_TC3_verificar_comportamiento_con_parametros_invalidos(get_token_login):
+def test_CG_05_GET_TC3_verificar_que_ningun_customer_group_es_encontrado_con_los_valores_invalidos_para_los_criterios_de_busqueda_field_value_condition_type(get_token_login):
     token = get_token_login
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
 
@@ -45,23 +47,18 @@ def test_CG_05_GET_TC3_verificar_comportamiento_con_parametros_invalidos(get_tok
 
     assert response.status_code == 500, "Internal Server Error"
 
+@pytest.mark.smoke
+@pytest.mark.functional
+def test_CG_05_TC2_GET_verificar_respuesta_de_error_cuando_no_tienes_autorizacion():
+    token = Singleton.get_token_no_valid()
+    url = f"{Singleton.get_base_url()}/rest/V1/customerGroups/search?searchCriteria[currentPage]=1&searchCriteria[pageSize]=10"
 
-@pytest.mark.regression
-def test_CG_05_GET_TC7_verificar_mensaje_de_exito(get_token_login):
-    token = get_token_login
-    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/search"
-
+    payload = {}
     headers = {
         'Authorization': f'Bearer {token}',
     }
 
-    params = {
-        'searchCriteria[filterGroups][0][filters][0][field]': 'id',
-        'searchCriteria[filterGroups][0][filters][0][value]': '1',
-        'searchCriteria[filterGroups][0][filters][0][condition_type]': 'eq'
-    }
-
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.request("GET", url, headers=headers, data=payload)
     response_data = response.json()
 
-    assert response.status_code == 200, "Expected status code 200"
+    assert response.status_code == 401, "Unauthorized"
