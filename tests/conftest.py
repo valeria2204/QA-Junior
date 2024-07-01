@@ -130,3 +130,110 @@ def get_body_of_create_a_customer_with_basic_information(get_token_login):
 
     assert response.status_code == 200
     return response.json()
+
+
+@pytest.fixture
+def send_request_of_check_if_non_existent_customer_group_can_be_deleted(get_token_login, group_id=1000):
+    Singleton.token = get_token_login
+    Singleton.response_404_json = None
+    Singleton.response_404_status_code = None
+
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
+
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {Singleton.token}',
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    Singleton.response_404_json = json.loads(response.text)
+
+
+
+@pytest.fixture
+def send_request_of_check_if_customer_group_can_be_deleted_with_empty_id(get_token_login, group_id=""):
+    Singleton.token = get_token_login
+    Singleton.response_400_json = None
+    Singleton.response_400_status_code = None
+
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
+
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {Singleton.token}',
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    Singleton.response_400_json = json.loads(response.text)
+    Singleton.response_400_status_code = response.status_code
+
+
+@pytest.fixture
+def send_request_of_check_if_customer_group_can_be_deleted_with_id_of_string_type(get_token_login, group_id="texto"):
+    Singleton.token = get_token_login
+    Singleton.response_400_json = None
+    Singleton.response_400_status_code = None
+
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
+
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {Singleton.token}',
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    Singleton.response_400_json = json.loads(response.text)
+    Singleton.response_400_status_code = response.status_code
+
+
+@pytest.fixture
+def send_request_of_check_if_customer_group_can_be_deleted_with_id_of_string_type(get_token_login, group_id="texto"):
+    Singleton.token = get_token_login
+    Singleton.response_400_json = None
+    Singleton.response_400_status_code = None
+
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
+
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {Singleton.token}',
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    Singleton.response_400_json = json.loads(response.text)
+    Singleton.response_400_status_code = response.status_code
+
+
+@pytest.fixture
+def send_request_of_check_if_customer_group_can_be_deleted_with_id_of_special_character_type(get_token_login, group_id="$$$$$"):
+    Singleton.token = get_token_login
+    Singleton.response_400_json = None
+    Singleton.response_400_status_code = None
+
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
+
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {Singleton.token}',
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    Singleton.response_400_json = json.loads(response.text)
+    Singleton.response_400_status_code = response.status_code
+
+
+@pytest.fixture
+def send_request_of_check_if_customer_group_can_be_deleted_with_token_no_valid(group_id="1"):
+    Singleton.response_401_json = None
+    Singleton.response_401_status_code = None
+    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
+
+    payload = {}
+    headers = {
+        'Authorization': f'Bearer {Singleton.get_token_no_valid()}',
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    Singleton.response_401_json = json.loads(response.text)
+    Singleton.response_401_status_code = response.status_code
+

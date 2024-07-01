@@ -5,6 +5,13 @@ import random
 
 
 class Singleton:
+    response_404_json = None
+    response_404_status_code = None
+    response_400_json = None
+    response_400_status_code = None
+    response_401_json = None
+    response_401_status_code = None
+
     __instance = None
 
     def __new__(cls):
