@@ -4,8 +4,6 @@ import requests
 from src.assertions.esquema_assertion import assert_validate_schema
 from src.singleton import Singleton
 
-RUTA_ESQUEMA = "get_customer_group_default.json"
-
 
 def test_CG2TC1_GET_verificar_la_obtencion_exitosa_de_CustomerGroup_por_defecto(get_token_login):
     url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/default"
@@ -31,7 +29,7 @@ def test_CG2TC2_GET_verificar_esquema_obtencion_exitosa_de_CustomerGroup_por_def
     response = requests.request("GET", url, headers=headers, data=payload)
 
     assert response.status_code == 200
-    esquema = Singleton.read_schema_json_file(RUTA_ESQUEMA)
+    esquema = Singleton.read_schema_json_file("get_customer_group.json")
     assert assert_validate_schema(response.json(), esquema)
 
 
