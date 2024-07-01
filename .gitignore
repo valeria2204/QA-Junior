@@ -1,0 +1,71 @@
+# Archivos y directorios de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Archivos de configuración del entorno
+*.env
+*.ini
+*.toml
+
+# Archivos de registro
+*.log
+
+# Archivos de bases de datos locales
+*.sqlite3
+
+# Archivos generados por editores y sistemas operativos
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Archivos generados por herramientas de desarrollo
+# PyCharm
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Caches de pytest
+.pytest_cache/
+
+# Directorios de distribución
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Archivos de cobertura
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Archivos de configuración de herramientas de desarrollo
+*.pylint.d/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
