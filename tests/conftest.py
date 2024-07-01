@@ -40,6 +40,7 @@ def get_body_create_customer(get_token_login):
     assert response.status_code == 200
     return response.json()
 
+
 @pytest.fixture
 def get_body_obtain_first_10_customer_groups(get_token_login):
     token = get_token_login
