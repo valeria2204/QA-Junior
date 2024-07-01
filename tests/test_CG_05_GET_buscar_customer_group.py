@@ -111,7 +111,7 @@ def test_CG05TC3_GET_verificar_que_ningun_customer_group_es_encontrado_con_los_v
     response = requests.get(url, headers=headers, params=params)
     response_data = response.json()
 
-    assert response.status_code == 500, "Internal Server Error"
+    assert response.status_code == 404, "NO FOUND 404"
 
 @pytest.mark.smoke
 @pytest.mark.functional
