@@ -25,25 +25,83 @@ def get_token_login():
     return response.json()
 
 
-def send_request_of_obtain_customer_groups_by_search_criteria_first_page_and_page_size(current_page: str, page_size: str):
-    url = (f"{TestData.base_url}{URIComplement.GET_SEARCH_CUSTOMER_GROUP.value}?"
-           f"{URIComplement.SEARCH_CRITERIA_PARAMETER_CURRENT_PAGE.value.replace(URIComplement.CURRENT_PAGE_KEY_NAME.value, current_page)}&"
-           f"{URIComplement.SEARCH_CRITERIA_PARAMETER_PAGE_SIZE.value.replace(URIComplement.PAGE_SIZE_KEY_NAME.value, page_size)}")
+def send_request_of_obtain_customer_groups_by_search_criterias(current_page=None, page_size=None, field=None,
+                                                               value=None, condition=None, token=None, method=None, headers=None,
+                                                               payload=None):
+    url = f"{TestData.base_url}{URIComplement.GET_SEARCH_CUSTOMER_GROUP.value}"
+
+    params = {}
+    if current_page is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_CURRENT_PAGE.value] = current_page
+    if page_size is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_PAGE_SIZE.value] = page_size
+    if field is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_FIELD.value] = field
+    if value is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_VALUE.value] = value
+    if condition is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_CONDITION.value] = condition
+    if method is None:
+        method = Method.GET.value
+
+    if token is None:
+        token = TestData.token
+    if payload is None:
+        payload = {}
+    if headers is None:
+        headers = header_authorization(token)
+
+    response = requests.request(method, url, headers=headers, data=payload, params=params)
+
+    TestData.response_json = json.loads(response.text)
+    TestData.response_status_code = response.status_code
+
+
+def send_request_of_obtain_customer_group_by_id(group_id, token=None):
+    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_ID.value}".replace(
+        URIComplement.GROUP_ID_KEY_NAME.value, group_id)
 
     payload = {}
-    headers = header_authorization(TestData.token)
+    if token is None:
+        token = TestData.token
+    headers = header_authorization(token)
     response = requests.request(Method.GET.value, url, headers=headers, data=payload)
 
     TestData.response_json = json.loads(response.text)
     TestData.response_status_code = response.status_code
 
 
-def send_request_of_obtain_customer_group_by_id(group_id):
-    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_ID.value}".replace(URIComplement.GROUP_ID_KEY_NAME.value, group_id)
+def send_request_of_obtain_default_customer_group_by(token=None, headers=None, payload=None, last_parameter=None):
+    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_DEFAULT.value}"
 
-    payload = {}
-    headers = header_authorization(TestData.token)
+    if token is None:
+        token = TestData.token
+    if payload is None:
+        payload = {}
+    if headers is None:
+        headers = header_authorization(token)
+    if last_parameter is not None:
+        url = url + last_parameter
     response = requests.request(Method.GET.value, url, headers=headers, data=payload)
+
+    TestData.response_json = json.loads(response.text)
+    TestData.response_status_code = response.status_code
+
+
+def send_request_of_obtain_default_customer_group_by_store_id(store_id, token=None, method=None, headers=None,
+                                                              payload=None):
+    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_STORE_ID.value}".replace(
+        URIComplement.STORE_ID_KEY_NAME.value, store_id)
+
+    if token is None:
+        token = TestData.token
+    if payload is None:
+        payload = {}
+    if headers is None:
+        headers = header_authorization(token)
+    if method is None:
+        method = Method.GET.value
+    response = requests.request(method, url, headers=headers, data=payload)
 
     TestData.response_json = json.loads(response.text)
     TestData.response_status_code = response.status_code
@@ -105,7 +163,8 @@ def send_request_of_create_a_customer(
 
 
 def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_id, method, token):
-    url = f"{TestData.base_url}{URIComplement.GET_CHECK_DELETION_CUSTOMER_GROUP.value}".replace(URIComplement.GROUP_ID_KEY_NAME.value, group_id)
+    url = f"{TestData.base_url}{URIComplement.GET_CHECK_DELETION_CUSTOMER_GROUP.value}".replace(
+        URIComplement.GROUP_ID_KEY_NAME.value, group_id)
 
     payload = {}
     headers = header_authorization(token)
@@ -113,7 +172,3 @@ def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_i
 
     TestData.response_json = json.loads(response.text)
     TestData.response_status_code = response.status_code
-
-
-
-
