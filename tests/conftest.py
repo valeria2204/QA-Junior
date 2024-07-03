@@ -1,221 +1,174 @@
 import json
-
 import pytest
 import requests
 
-from src.singleton import Singleton
+from src.enums.method import Method
+from src.enums.uri import URIComplement
+from src.headers.headers import header_authorization, header_content_type_authorization, header_content_type
+from src.testdata import TestData
 
 
 @pytest.fixture
+def setup_data():
+    TestData.token = get_token_login() if TestData.token is None else TestData.token
+
+
 def get_token_login():
-    url = Singleton.get_base_url() + "/rest/default/V1/integration/admin/token"
-    headers = {'Content-Type': 'application/json'}
+    TestData.load_attributes_from_json()
+    url = f"{TestData.base_url}{URIComplement.POST_GET_TOKEN.value}"
+    headers = header_content_type()
     payload = json.dumps({
-        "username": Singleton.get_username(),
-        "password": Singleton.get_password()
+        "username": TestData.username,
+        "password": TestData.password
     })
-    response = requests.post(url, headers=headers, data=payload)
-    assert response.status_code == 200
+    response = requests.request(Method.POST.value, url, headers=headers, data=payload)
     return response.json()
 
 
-@pytest.fixture
-def get_body_create_customer(get_token_login):
-    token = get_token_login
-    url = Singleton.get_base_url() + "/rest/default/V1/customers"
+def send_request_of_obtain_customer_groups_by_search_criterias(current_page=None, page_size=None, field=None,
+                                                               value=None, condition=None, token=None, method=None, headers=None,
+                                                               payload=None):
+    url = f"{TestData.base_url}{URIComplement.GET_SEARCH_CUSTOMER_GROUP.value}"
+
+    params = {}
+    if current_page is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_CURRENT_PAGE.value] = current_page
+    if page_size is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_PAGE_SIZE.value] = page_size
+    if field is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_FIELD.value] = field
+    if value is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_VALUE.value] = value
+    if condition is not None:
+        params[URIComplement.SEARCH_CRITERIA_PARAMETER_CONDITION.value] = condition
+    if method is None:
+        method = Method.GET.value
+
+    if token is None:
+        token = TestData.token
+    if payload is None:
+        payload = {}
+    if headers is None:
+        headers = header_authorization(token)
+
+    response = requests.request(method, url, headers=headers, data=payload, params=params)
+
+    TestData.response_json = json.loads(response.text)
+    TestData.response_status_code = response.status_code
+
+
+def send_request_of_obtain_customer_group_by_id(group_id, token=None):
+    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_ID.value}".replace(
+        URIComplement.GROUP_ID_KEY_NAME.value, group_id)
+
+    payload = {}
+    if token is None:
+        token = TestData.token
+    headers = header_authorization(token)
+    response = requests.request(Method.GET.value, url, headers=headers, data=payload)
+
+    TestData.response_json = json.loads(response.text)
+    TestData.response_status_code = response.status_code
+
+
+def send_request_of_obtain_default_customer_group_by(token=None, headers=None, payload=None, last_parameter=None):
+    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_DEFAULT.value}"
+
+    if token is None:
+        token = TestData.token
+    if payload is None:
+        payload = {}
+    if headers is None:
+        headers = header_authorization(token)
+    if last_parameter is not None:
+        url = url + last_parameter
+    response = requests.request(Method.GET.value, url, headers=headers, data=payload)
+
+    TestData.response_json = json.loads(response.text)
+    TestData.response_status_code = response.status_code
+
+
+def send_request_of_obtain_default_customer_group_by_store_id(store_id, token=None, method=None, headers=None,
+                                                              payload=None):
+    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_STORE_ID.value}".replace(
+        URIComplement.STORE_ID_KEY_NAME.value, store_id)
+
+    if token is None:
+        token = TestData.token
+    if payload is None:
+        payload = {}
+    if headers is None:
+        headers = header_authorization(token)
+    if method is None:
+        method = Method.GET.value
+    response = requests.request(method, url, headers=headers, data=payload)
+
+    TestData.response_json = json.loads(response.text)
+    TestData.response_status_code = response.status_code
+
+
+def send_request_of_create_a_customer(
+        email: str
+        , firstname: str
+        , lastname: str
+        , group_id=1
+        , default_billing="2024-04-07 23:49:59"
+        , default_shipping="2024-04-07 23:49:59"
+        , created_at="2024-04-07 23:49:59"
+        , updated_at="2024-04-07 23:49:59"
+        , created_in="Default Store View"
+        , dob="2024-04-17"
+        , middlename="MN"
+        , prefix="P"
+        , suffix="S"
+        , gender=1
+        , store_id=1
+        , website_id=1
+        , addresses=[]
+        , disable_auto_group_change=0
+        , password="Password123#"
+        , redirectUrl="string"
+):
+    url = f"{TestData.base_url}{URIComplement.POST_CUSTOMER.value}"
+
     payload = json.dumps({
         "customer": {
-            "email": f"{Singleton.get_random_string(4)}@gmail.com",
-            "firstname": "jorge",
-            "lastname": "flores"
-        }
+            "group_id": group_id,
+            "default_billing": default_billing,
+            "default_shipping": default_shipping,
+            "created_at": created_at,
+            "updated_at": created_at,
+            "created_in": created_in,
+            "dob": dob,
+            "email": email,
+            "firstname": firstname,
+            "lastname": lastname,
+            "middlename": middlename,
+            "prefix": prefix,
+            "suffix": suffix,
+            "gender": gender,
+            "store_id": store_id,
+            "website_id": website_id,
+            "addresses": addresses,
+            "disable_auto_group_change": disable_auto_group_change
+        },
+        "password": password,
+        "redirectUrl": redirectUrl
     })
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {token}',
-    }
+    headers = header_content_type_authorization(TestData.token)
+    response = requests.request(Method.POST.value, url, headers=headers, data=payload)
 
-    response = requests.request("POST", url, headers=headers, data=payload)
-
-    assert response.status_code == 200
-    return response.json()
+    TestData.response_status_code = response.status_code
+    TestData.response_json = json.loads(response.text)
 
 
-@pytest.fixture
-def get_body_obtain_first_10_customer_groups(get_token_login):
-    token = get_token_login
-    url = Singleton.get_base_url() + "/rest/V1/customerGroups/search?searchCriteria[currentPage]=1&searchCriteria[pageSize]=10"
-    payload = {}
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {token}',
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-
-    assert response.status_code == 200
-    return response.json()
-
-
-@pytest.fixture
-def get_body_of_obtain_customer_group_by_id(get_token_login, group_id=1):
-    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}"
-    payload = {}
-    headers = {
-        'Authorization': f'Bearer {get_token_login}',
-    }
-
-    response = requests.get(url, headers=headers, data=payload)
-
-    return response.json()
-
-
-@pytest.fixture
-def get_body_of_create_a_customer_with_full_information(get_token_login):
-    token = get_token_login
-    url = Singleton.get_base_url() + "/rest/default/V1/customers"
-    random_alphanumeric_value = Singleton.get_random_alphanumeric(4)
-    payload = json.dumps({
-        "customer": {
-            "group_id": 1,
-            "default_billing": "2024-04-07 23:49:59",
-            "default_shipping": "2024-04-07 23:49:59",
-            "created_at": "2024-04-07 23:49:59",
-            "updated_at": "2024-04-07 23:49:59",
-            "created_in": "Default Store View",
-            "dob": "2024-04-17",
-            "email": f"{random_alphanumeric_value}@gmail.com",
-            "firstname": f"{random_alphanumeric_value}_FN",
-            "lastname": f"{random_alphanumeric_value}_LN",
-            "middlename": f"{random_alphanumeric_value}_MN",
-            "prefix": f"{random_alphanumeric_value}_P",
-            "suffix": f"{random_alphanumeric_value}_S",
-            "gender": 1,
-            "store_id": 1,
-            "website_id": 1,
-            "addresses": [],
-            "disable_auto_group_change": 0},
-        "password": f"{Singleton.get_password()}!!",
-        "redirectUrl": "string"
-    })
-
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {token}',
-    }
-
-    response = requests.request("POST", url, headers=headers, data=payload)
-
-    assert response.status_code == 200
-    return response.json()
-
-
-@pytest.fixture
-def get_body_of_create_a_customer_with_basic_information(get_token_login):
-    token = get_token_login
-    url = Singleton.get_base_url() + "/rest/default/V1/customers"
-    payload = json.dumps({
-        "customer": {
-            "email": f"{Singleton.get_random_alphanumeric(4)}@gmail.com",
-            "firstname": "jorge",
-            "lastname": "flores"
-        }
-    })
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {token}',
-    }
-
-    response = requests.request("POST", url, headers=headers, data=payload)
-
-    assert response.status_code == 200
-    return response.json()
-
-
-@pytest.fixture
-def send_request_of_check_if_non_existent_customer_group_can_be_deleted(get_token_login, group_id=1000):
-    Singleton.token = get_token_login
-    Singleton.response_404_json = None
-    Singleton.response_404_status_code = None
-
-    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
+def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_id, method, token):
+    url = f"{TestData.base_url}{URIComplement.GET_CHECK_DELETION_CUSTOMER_GROUP.value}".replace(
+        URIComplement.GROUP_ID_KEY_NAME.value, group_id)
 
     payload = {}
-    headers = {
-        'Authorization': f'Bearer {Singleton.token}',
-    }
+    headers = header_authorization(token)
+    response = requests.request(method, url, headers=headers, data=payload)
 
-    response = requests.request("GET", url, headers=headers, data=payload)
-    Singleton.response_404_json = json.loads(response.text)
-
-
-
-@pytest.fixture
-def send_request_of_check_if_customer_group_can_be_deleted_with_empty_id(get_token_login, group_id=""):
-    Singleton.token = get_token_login
-    Singleton.response_400_json = None
-    Singleton.response_400_status_code = None
-
-    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
-
-    payload = {}
-    headers = {
-        'Authorization': f'Bearer {Singleton.token}',
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    Singleton.response_400_json = json.loads(response.text)
-    Singleton.response_400_status_code = response.status_code
-
-
-@pytest.fixture
-def send_request_of_check_if_customer_group_can_be_deleted_with_id_of_string_type(get_token_login, group_id="texto"):
-    Singleton.token = get_token_login
-    Singleton.response_400_json = None
-    Singleton.response_400_status_code = None
-
-    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
-
-    payload = {}
-    headers = {
-        'Authorization': f'Bearer {Singleton.token}',
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    Singleton.response_400_json = json.loads(response.text)
-    Singleton.response_400_status_code = response.status_code
-
-
-@pytest.fixture
-def send_request_of_check_if_customer_group_can_be_deleted_with_id_of_special_character_type(get_token_login, group_id="$$$$$"):
-    Singleton.token = get_token_login
-    Singleton.response_400_json = None
-    Singleton.response_400_status_code = None
-
-    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
-
-    payload = {}
-    headers = {
-        'Authorization': f'Bearer {Singleton.token}',
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    Singleton.response_400_json = json.loads(response.text)
-    Singleton.response_400_status_code = response.status_code
-
-
-@pytest.fixture
-def send_request_of_check_if_customer_group_can_be_deleted_with_token_no_valid(group_id="1"):
-    Singleton.response_401_json = None
-    Singleton.response_401_status_code = None
-    url = f"{Singleton.get_base_url()}/rest/default/V1/customerGroups/{group_id}/permissions"
-
-    payload = {}
-    headers = {
-        'Authorization': f'Bearer {Singleton.get_token_no_valid()}',
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-    Singleton.response_401_json = json.loads(response.text)
-    Singleton.response_401_status_code = response.status_code
-
+    TestData.response_json = json.loads(response.text)
+    TestData.response_status_code = response.status_code
