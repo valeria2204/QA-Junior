@@ -3,6 +3,9 @@ import os
 
 
 class TestData:
+    module_response_json = None
+    function_response_json = None
+
     __instance = None
 
     token = None
@@ -12,8 +15,8 @@ class TestData:
     token_no_valid = None
     base_url = None
 
-    response_json = None
     response_status_code = None
+    old_password = None
 
     def __new__(cls):
         if cls.__instance is None:
