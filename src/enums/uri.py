@@ -16,6 +16,8 @@ class URIComplement(Enum):
     GET_CUSTOMER_GROUP_BY_ID = "rest/default/V1/customerGroups/{group_id}"
     GET_CHECK_DELETION_CUSTOMER_GROUP = "rest/default/V1/customerGroups/{group_id}/permissions"
 
+    DELETE_CUSTOMER_GROUP = "rest/default/V1/customerGroups/{group_id}"
+
     STORE_ID_KEY_NAME = "{store_id}"
     GROUP_ID_KEY_NAME = "{group_id}"
     PAGE_SIZE_KEY_NAME = "{page_size}"
