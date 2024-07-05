@@ -4,9 +4,8 @@ from src.assertions.assertions import assert_response_status
 from src.assertions.assertions_schema import assert_schemas
 from src.enums.method import Method
 from src.testdata import TestData
-from tests.conftest import send_request_of_obtain_customer_groups_by_search_criterias
 from tests.conftest import setup_data
-
+from tests.customer_group.setup import setup_module, send_request_of_obtain_customer_groups_by_search_criterias
 
 
 @pytest.mark.regression
@@ -32,16 +31,15 @@ def test_CG05TC6_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_cu
 @pytest.mark.smoke
 @pytest.mark.functional
 def test_schema_verificar_obtencion_exitosa_de_los_customer_groups(setup_data):
-    send_request_of_obtain_customer_groups_by_search_criterias("1", "4")
-    assert_schemas(TestData.response_json, 'get_customer_groups_by_search_criteria_first_page_and_page_size.json')
-
+    response_json = send_request_of_obtain_customer_groups_by_search_criterias("1", "4")
+    assert_schemas(response_json, 'get_customer_groups_by_search_criteria_first_page_and_page_size.json')
 
 
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG05TC11_GET_verificar_que_el_primer_customer_group_es_encontrado_por_los_criterios_de_busqueda_field_value_condition_type(setup_data):
-    send_request_of_obtain_customer_groups_by_search_criterias(None, None, "id", "1", "eq")
+def test_CG05TC11_GET_verificar_que_el_primer_customer_group_es_encontrado_por_los_criterios_de_busqueda_field_value_condition_type(setup_module):
+    send_request_of_obtain_customer_groups_by_search_criterias(None, None, "id", TestData.module_response_json["id"], "eq")
     assert_response_status(TestData.response_status_code, 200)
 
 

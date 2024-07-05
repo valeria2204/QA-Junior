@@ -1,13 +1,11 @@
 import pytest
-import requests
 
 from src.assertions.assertions_schema import assert_schemas
 from src.assertions.assertions import assert_response_status
 from src.enums.method import Method
-from src.enums.uri import URIComplement
-from src.headers.headers import header_authorization
 from src.testdata import TestData
-from tests.conftest import setup_data, send_request_of_obtain_default_customer_group_by_store_id
+from tests.conftest import setup_data
+from tests.customer_group.setup import send_request_of_obtain_default_customer_group_by_store_id
 
 
 @pytest.mark.smoke
@@ -44,9 +42,9 @@ def test_CG04_TC3_GET_verificar_la_obtencion_del_customer_group_por_defecto_con_
 @pytest.mark.regression
 def test_CG04_TC4_GET_verificar_esquema_verificar_la_obtencion_del_customer_group_por_defecto_con_storeId_valido(setup_data):
     store_id = "1"
-    send_request_of_obtain_default_customer_group_by_store_id(store_id)
+    response_json = send_request_of_obtain_default_customer_group_by_store_id(store_id)
 
-    assert_schemas(TestData.response_json, "get_customer_group.json")
+    assert_schemas(response_json, "get_customer_group.json")
 
 
 
