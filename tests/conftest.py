@@ -8,9 +8,14 @@ from src.headers.headers import header_authorization, header_content_type_author
 from src.testdata import TestData
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def setup_data():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
+
+    def teardown():
+        print("borrar cambios")
+    yield TestData.token
+    teardown()
 
 
 def get_token_login():
