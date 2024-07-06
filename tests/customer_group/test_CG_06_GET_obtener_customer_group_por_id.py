@@ -2,6 +2,8 @@ import pytest
 
 from src.assertions.assertions import assert_response_status
 from src.assertions.assertions_schema import assert_schemas
+from src.enums.schema_json_name import SchemaName
+from src.enums.static_data import StaticData
 from src.testdata import TestData
 from tests.conftest import setup_data
 from tests.customer_group.setup import setup_module, send_request_of_obtain_customer_group_by_id
@@ -20,7 +22,7 @@ def test_CG6TC1_GET_verificar_obtencion_exitosa_de_customer_group_por_id(setup_m
 @pytest.mark.regression
 def test_CG6TC2_GET_validar_esquema_obtencion_exitosa_de_customer_group_por_id(setup_module):
     response_json = send_request_of_obtain_customer_group_by_id(TestData.module_response_json["id"])
-    assert_schemas(response_json, 'get_customer_group.json')
+    assert_schemas(response_json, SchemaName.get_customer_group.value)
 
     
 @pytest.mark.functional
@@ -57,7 +59,6 @@ def test_CG6TC6_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_
 
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG6TC7_GET_validar_error_de_no_autorizado_al_acceder_sin_token_de_autorizacion():
-    group_id = "1"
-    send_request_of_obtain_customer_group_by_id(group_id, TestData.token_no_valid)
+def test_CG6TC7_GET_validar_error_de_no_autorizado_al_acceder_sin_token_de_autorizacion(setup_data):
+    send_request_of_obtain_customer_group_by_id(StaticData.group_id.value, TestData.token_no_valid)
     assert_response_status(TestData.response_status_code, 401)

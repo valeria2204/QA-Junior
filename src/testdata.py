@@ -17,6 +17,7 @@ class TestData:
 
     response_status_code = None
     old_password = None
+    random_email = None
 
     def __new__(cls):
         if cls.__instance is None:

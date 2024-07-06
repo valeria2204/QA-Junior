@@ -4,6 +4,7 @@ import pytest
 import requests
 
 from src.enums.method import Method
+from src.enums.static_data import StaticData
 from src.enums.uri import URIComplement
 from src.headers.headers import header_content_type_authorization, header_authorization
 from src.testdata import TestData
@@ -14,8 +15,10 @@ from tests.helpers.utils import Utils
 @pytest.fixture(scope="function")
 def setup_function():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
-    random_value = Utils().get_random_alphanumeric(10)
-    TestData.function_response_json = send_request_of_create_a_customer(f"{random_value}@gmail.com", f"{random_value}_FN", f"{random_value}_LN")
+    TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.function_response_json = send_request_of_create_a_customer(TestData.random_email,
+                                                                        StaticData.firstname.value,
+                                                                        StaticData.lastname.value)
 
     def teardown():
         send_request_of_remove_customer(TestData.function_response_json["id"])
@@ -25,8 +28,10 @@ def setup_function():
 @pytest.fixture(scope="module")
 def setup_module():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
-    random_value = Utils().get_random_alphanumeric(10)
-    TestData.module_response_json = send_request_of_create_a_customer(f"{random_value}@gmail.com", f"{random_value}_FN", f"{random_value}_LN")
+    TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.module_response_json = send_request_of_create_a_customer(TestData.random_email,
+                                                                        StaticData.firstname.value,
+                                                                        StaticData.lastname.value)
 
     def teardown():
         send_request_of_remove_customer(TestData.module_response_json["id"])
@@ -49,53 +54,70 @@ def send_request_of_create_a_customer(
         email: str
         , firstname: str
         , lastname: str
-        , group_id=1
-        , default_billing="2024-04-07 23:49:59"
-        , default_shipping="2024-04-07 23:49:59"
-        , created_at="2024-04-07 23:49:59"
-        , updated_at="2024-04-07 23:49:59"
-        , created_in="Default Store View"
-        , dob="2024-04-17"
-        , middlename="MN"
-        , prefix="P"
-        , suffix="S"
-        , gender=1
-        , store_id=1
-        , website_id=1
-        , addresses=[]
-        , disable_auto_group_change=0
-        , password=""
-        , redirectUrl="string"
+        , group_id=None
+        , default_billing=None
+        , default_shipping=None
+        , created_at=None
+        , updated_at=None
+        , created_in=None
+        , dob=None
+        , middlename=None
+        , prefix=None
+        , suffix=None
+        , gender=None
+        , store_id=None
+        , website_id=None
+        , addresses=None
+        , disable_auto_group_change=None
+        , password=None
+        , redirect_url=None
 ):
-    TestData.old_password = "Demo123#"
     url = f"{TestData.base_url}{URIComplement.POST_CUSTOMER.value}"
 
-    payload = json.dumps({
-        "customer": {
-            "group_id": group_id,
-            "default_billing": default_billing,
-            "default_shipping": default_shipping,
-            "created_at": created_at,
-            "updated_at": created_at,
-            "created_in": created_in,
-            "dob": dob,
-            "email": email,
-            "firstname": firstname,
-            "lastname": lastname,
-            "middlename": middlename,
-            "prefix": prefix,
-            "suffix": suffix,
-            "gender": gender,
-            "store_id": store_id,
-            "website_id": website_id,
-            "addresses": addresses,
-            "disable_auto_group_change": disable_auto_group_change
-        },
-        "password": (TestData.old_password if password is "" else password),
-        "redirectUrl": redirectUrl
-    })
+    payload = {StaticData.customer.name: StaticData.customer.value}
+    if email is not None:
+        payload[StaticData.customer.name][StaticData.email.name] = email
+    if firstname is not None:
+        payload[StaticData.customer.name][StaticData.firstname.name] = firstname
+    if lastname is not None:
+        payload[StaticData.customer.name][StaticData.lastname.name] = lastname
+    if group_id is not None:
+        payload[StaticData.customer.name][StaticData.group_id.name] = group_id
+    if default_billing is not None:
+        payload[StaticData.customer.name][StaticData.default_billing.name] = default_billing
+    if default_shipping is not None:
+        payload[StaticData.customer.name][StaticData.default_shipping.name] = default_shipping
+    if created_at is not None:
+        payload[StaticData.customer.name][StaticData.created_at.name] = created_at
+    if updated_at is not None:
+        payload[StaticData.customer.name][StaticData.updated_at.name] = updated_at
+    if created_in is not None:
+        payload[StaticData.customer.name][StaticData.created_in.name] = created_in
+    if dob is not None:
+        payload[StaticData.customer.name][StaticData.dob.name] = dob
+    if middlename is not None:
+        payload[StaticData.customer.name][StaticData.middlename.name] = middlename
+    if prefix is not None:
+        payload[StaticData.customer.name][StaticData.prefix.name] = prefix
+    if suffix is not None:
+        payload[StaticData.customer.name][StaticData.suffix.name] = suffix
+    if gender is not None:
+        payload[StaticData.customer.name][f'{gender=}'.split('=')[0]] = gender
+    if store_id is not None:
+        payload[StaticData.customer.name][f'{store_id=}'.split('=')[0]] = store_id
+    if website_id is not None:
+        payload[StaticData.customer.name][f'{website_id=}'.split('=')[0]] = website_id
+    if addresses is not None:
+        payload[StaticData.customer.name][f'{addresses=}'.split('=')[0]] = addresses
+    if disable_auto_group_change is not None:
+        payload[StaticData.customer.name][StaticData.disable_auto_group_change.name] = disable_auto_group_change
+    if password is not None:
+        payload[StaticData.password.name] = password
+    if redirect_url is not None:
+        payload[StaticData.redirectUrl.name] = redirect_url
+
     headers = header_content_type_authorization(TestData.token)
-    response = requests.request(Method.POST.value, url, headers=headers, data=payload)
+    response = requests.request(Method.POST.value, url, headers=headers, data=json.dumps(payload))
 
     TestData.response_status_code = response.status_code
     return json.loads(response.text)

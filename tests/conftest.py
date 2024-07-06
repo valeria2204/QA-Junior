@@ -22,6 +22,5 @@ def get_token_login():
         "password": TestData.password
     })
     response = requests.request(Method.POST.value, url, headers=headers, data=payload)
-    print(f"\nNuevo token generado {TestData.token}")
     return response.json()
 

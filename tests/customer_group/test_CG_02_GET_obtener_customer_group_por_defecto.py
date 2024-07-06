@@ -2,6 +2,7 @@ import pytest
 
 from src.assertions.assertions import assert_response_status
 from src.assertions.assertions_schema import assert_schemas
+from src.enums.schema_json_name import SchemaName
 from src.testdata import TestData
 from tests.conftest import setup_data
 from tests.customer_group.setup import send_request_of_obtain_default_customer_group_by
@@ -20,7 +21,7 @@ def test_CG2TC1_GET_verificar_la_obtencion_exitosa_de_customer_groups_por_defect
 @pytest.mark.regression
 def test_CG2TC2_GET_verificar_esquema_obtencion_exitosa_de_customer_groups_por_defecto(setup_data):
     response_json = send_request_of_obtain_default_customer_group_by()
-    assert_schemas(response_json, 'get_customer_group.json')
+    assert_schemas(response_json, SchemaName.get_customer_group.value)
 
 
 @pytest.mark.regression
