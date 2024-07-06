@@ -25,6 +25,39 @@ def setup_function():
     yield TestData.token
     teardown()
 
+
+@pytest.fixture(scope="function")
+def setup_function_full_customer():
+    TestData.token = get_token_login() if TestData.token is None else TestData.token
+    TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.function_response_json = send_request_of_create_a_customer(TestData.random_email
+                                                                        , StaticData.firstname.value
+                                                                        , StaticData.lastname.value
+                                                                        , StaticData.group_id.value
+                                                                        , StaticData.default_billing.value
+                                                                        , StaticData.default_shipping.value
+                                                                        , StaticData.created_at.value
+                                                                        , StaticData.updated_at.value
+                                                                        , StaticData.created_in.value
+                                                                        , StaticData.dob.value
+                                                                        , StaticData.middlename.value
+                                                                        , StaticData.prefix.value
+                                                                        , StaticData.suffix.value
+                                                                        , StaticData.gender.value
+                                                                        , StaticData.store_id.value
+                                                                        , StaticData.website_id.value
+                                                                        , StaticData.addresses.value
+                                                                        , StaticData.disable_auto_group_change.value
+                                                                        , StaticData.password.value
+                                                                        , StaticData.redirectUrl.value
+                                                                        )
+
+    def teardown():
+        send_request_of_remove_customer(TestData.function_response_json["id"])
+    yield TestData.token
+    teardown()
+
+
 @pytest.fixture(scope="module")
 def setup_module():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
@@ -39,11 +72,12 @@ def setup_module():
     teardown()
 
 
-def send_request_of_remove_customer(customer_id):
+def send_request_of_remove_customer(customer_id, token=None):
     url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER.value.replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, str(customer_id))}"
-
+    if token is None:
+        token = TestData.token
     payload = {}
-    headers = header_authorization(TestData.token)
+    headers = header_authorization(token)
     response = requests.request(Method.DELETE.value, url, headers=headers, data=payload)
 
     TestData.response_status_code = response.status_code
@@ -150,3 +184,5 @@ def send_request_of_update_password_of_a_customer(customer_id, new_password, old
     TestData.response_status_code = response.status_code
 
     return response.json()
+
+
