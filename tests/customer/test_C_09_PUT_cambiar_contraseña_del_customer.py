@@ -102,7 +102,7 @@ def test_C9TC11_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_cu
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC12_PUT_Verificar_status_code_400_cuando_el_id_del_customer_es_incorrecto(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer("", Utils.get_random_password(12), StaticData.password.value)
+    send_request_of_update_password_of_a_customer(StaticData.empty_name, Utils.get_random_password(12), StaticData.password.value)
     assert_response_status(TestData.response_status_code, 400)
 
 
