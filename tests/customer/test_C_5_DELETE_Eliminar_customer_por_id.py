@@ -92,11 +92,26 @@ def test_C5TC10_DELETE_Validar_esquema_status_code_400_al_eliminar_un_customer_c
     assert_schemas(response, SchemaName.response_status_code_400_type_value_is_invalid.value)
 
 
-#def test_C5TC11_DELETE_validar_esquema_status_code_400_al_eliminar_un_customer_con_customer_id_invalido_de_tipo_letra(setup_function):
+@pytest.mark.functional
+@pytest.mark.regression
+def test_C5TC11_DELETE_validar_esquema_status_code_400_al_eliminar_un_customer_con_customer_id_invalido_de_tipo_letra(setup_function):
+    customer_id = Utils.get_random_letters(2)
+    response = send_request_of_remove_customer(customer_id)
+    assert_schemas(response, SchemaName.response_status_code_400_type_value_is_invalid.value)
+
 
 @pytest.mark.functional
 @pytest.mark.regression
-def test_C5TC_DELETE_validar_esquema_status_code_400_al_eliminar_un_customer_nuevo(setup_function):
+def test_C5TC12_DELETE_validar_esquema_status_code_404_al_eliminar_un_Customer_con_customer_id_vacio(setup_function):
+    customer_id = StaticData.empty_name.value
+    response = send_request_of_remove_customer(customer_id)
+    assert_schemas(response, SchemaName.response_status_code_400_type_value_is_invalid.value)
+
+
+@pytest.mark.functional
+@pytest.mark.regression
+def test_C5TC13_DELETE_validar_esquema_status_code_404_al_eliminar_un_customer_con_customer_id_no_existente(setup_function):
     customer_id = Utils.get_random_numerics(10)
     response = send_request_of_remove_customer(customer_id)
     assert_schemas(response, SchemaName.response_status_code_400_type_value_is_invalid.value)
+
