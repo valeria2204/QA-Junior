@@ -3,6 +3,7 @@ import pytest
 from src.assertions.assertions import assert_response_status
 from src.assertions.assertions_schema import assert_schemas
 from src.enums.method import Method
+from src.enums.schema_json_name import SchemaName
 from src.testdata import TestData
 from tests.conftest import setup_data
 from tests.customer_group.setup import setup_module, send_request_of_obtain_customer_groups_by_search_criterias
@@ -32,7 +33,7 @@ def test_CG05TC6_GET_verificar_que_retorna_un_error_al_buscar_los_10_primeros_cu
 @pytest.mark.functional
 def test_schema_verificar_obtencion_exitosa_de_los_customer_groups(setup_data):
     response_json = send_request_of_obtain_customer_groups_by_search_criterias("1", "4")
-    assert_schemas(response_json, 'get_customer_groups_by_search_criteria_first_page_and_page_size.json')
+    assert_schemas(response_json, SchemaName.get_customer_groups_by_search_criteria_first_page_and_page_size.value)
 
 
 @pytest.mark.smoke

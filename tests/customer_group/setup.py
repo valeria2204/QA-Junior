@@ -127,7 +127,7 @@ def send_request_of_obtain_default_customer_group_by(token=None, headers=None, p
 def send_request_of_obtain_default_customer_group_by_store_id(store_id, token=None, method=None, headers=None,
                                                               payload=None):
     url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_STORE_ID.value}".replace(
-        URIComplement.STORE_ID_KEY_NAME.value, store_id)
+        URIComplement.STORE_ID_KEY_NAME.value, f"{store_id}")
 
     if token is None:
         token = TestData.token
