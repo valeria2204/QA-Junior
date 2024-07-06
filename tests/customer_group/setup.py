@@ -35,16 +35,22 @@ def setup_module():
     teardown()
 
 
-def send_request_of_create_a_customer_group(code):
+def send_request_of_create_a_customer_group(code, payload=None, token=None):
     url = f"{TestData.base_url}{URIComplement.POST_CUSTOMER_GROUP.value}"
 
-    payload = json.dumps({
-        "group": {
-            "code": f"{code}"
-        }
-    })
+    if not payload:
+        payload = json.dumps({
+            "group": {
+                "code": f"{code}"
+            }
+        })
 
-    headers = header_content_type_authorization(TestData.token)
+    if token:
+        bearer_token = token
+    else:
+        bearer_token = TestData.token
+
+    headers = header_content_type_authorization(bearer_token)
     response = requests.request(Method.POST.value, url, headers=headers, data=payload)
     TestData.response_status_code = response.status_code
 
