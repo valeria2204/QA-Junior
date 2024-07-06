@@ -61,4 +61,3 @@ class Utils:
         password = "".join(random.choices(characters, k=length))
         password = password.replace('~', "")
         return "".join(password)
-
