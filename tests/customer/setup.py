@@ -59,17 +59,6 @@ def setup_module_customer_with_account():
     teardown()
 
 
-def send_request_of_remove_customer(customer_id):
-    url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER.value.replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, str(customer_id))}"
-
-    payload = {}
-    headers = header_authorization(TestData.token)
-    response = requests.request(Method.DELETE.value, url, headers=headers, data=payload)
-
-    TestData.response_status_code = response.status_code
-    return response.json()
-
-
 @pytest.fixture(scope="module")
 def setup_module():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
