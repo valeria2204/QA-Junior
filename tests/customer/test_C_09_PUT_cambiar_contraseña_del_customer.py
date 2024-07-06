@@ -61,7 +61,7 @@ def test_C9TC6_PUT_verificar_status_code_401_cuando_el_cambio_de_password_de_cus
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC7_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_customer_con_el_parametro_new_password_vacio(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], "", TestData.old_password)
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], "", StaticData.password.value)
     assert_response_status(TestData.response_status_code, 400)
 
 
@@ -69,7 +69,7 @@ def test_C9TC7_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_cus
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC8_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_customer_con_el_parametro_new_password_tiene_caracteres_invalidos(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], "?", TestData.old_password)
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], "?", StaticData.password.value)
     assert_response_status(TestData.response_status_code, 400)
 
 
@@ -77,7 +77,7 @@ def test_C9TC8_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_cus
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC9_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_customer_con_el_parametro_new_password_es_de_tipo_numericos(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_numerics(12), TestData.old_password)
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_numerics(12), StaticData.password.value)
     assert_response_status(TestData.response_status_code, 400)
 
 
@@ -85,7 +85,7 @@ def test_C9TC9_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_cus
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC10_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_customer_con_el_parametro_new_password_no_contiene_valores_tipo_numericos(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], "Demos#", TestData.old_password)
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], "Demos#", StaticData.password.value)
     assert_response_status(TestData.response_status_code, 400)
 
 
@@ -94,7 +94,7 @@ def test_C9TC10_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_cu
 @pytest.mark.regression
 def test_C9TC11_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_customer_con_un_parametro_new_password_tiene_menos_de_8_caracteres(setup_module_customer_with_account):
     new_password = Utils.get_random_password(7)
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], new_password, TestData.old_password)
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], new_password, StaticData.password.value)
     assert_response_status(TestData.response_status_code, 400)
 
 
