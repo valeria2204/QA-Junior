@@ -5,10 +5,7 @@ from src.assertions.assertions_schema import assert_schemas
 from src.enums.schema_json_name import SchemaName
 from src.enums.static_data import StaticData
 from src.testdata import TestData
-from tests.customer.setup import setup_module, send_request_of_create_a_customer, setup_function, \
-    send_request_of_remove_customer, setup_function_full_customer, setup_function_full_customer
-
-from tests.conftest import setup_data
+from tests.customer.setup import setup_function, send_request_of_remove_customer, setup_function_full_customer
 from tests.helpers.utils import Utils
 
 
@@ -94,6 +91,8 @@ def test_C5TC10_DELETE_Validar_esquema_status_code_400_al_eliminar_un_customer_c
     response = send_request_of_remove_customer(customer_id)
     assert_schemas(response, SchemaName.response_status_code_400_type_value_is_invalid.value)
 
+
+#def test_C5TC11_DELETE_validar_esquema_status_code_400_al_eliminar_un_customer_con_customer_id_invalido_de_tipo_letra(setup_function):
 
 @pytest.mark.functional
 @pytest.mark.regression
