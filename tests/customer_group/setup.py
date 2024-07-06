@@ -158,3 +158,16 @@ def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_i
     TestData.response_status_code = response.status_code
     return response.json()
 
+
+def send_request_of_delete_customer_group_by_id(group_id, token=None, method="DELETE"):
+    url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER_GROUP.value}".replace(
+        URIComplement.GROUP_ID_KEY_NAME.value, f"{group_id}")
+
+    payload = {}
+    if token is None:
+        token = TestData.token
+    headers = header_authorization(token)
+
+    response = requests.request(method, url, headers=headers, data=payload)
+    TestData.response_status_code = response.status_code
+    return response.json()
