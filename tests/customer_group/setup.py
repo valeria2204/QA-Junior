@@ -45,7 +45,7 @@ def send_request_of_create_a_customer_group(code, payload=None, token=None):
             }
         })
 
-    if token:
+    if token != None:
         bearer_token = token
     else:
         bearer_token = TestData.token
