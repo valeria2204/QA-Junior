@@ -5,7 +5,7 @@ from src.assertions.assertions_schema import assert_schemas
 from src.enums.static_data import StaticData
 from src.testdata import TestData
 from tests.customer.setup import setup_module, send_request_of_create_a_customer, setup_function, \
-    send_request_of_remove_customer
+    send_request_of_remove_customer, send_request_of_create_full_customer_with_params, setup_function_request_of_create_full_customer_with_params
 
 from tests.conftest import setup_data
 from tests.helpers.utils import Utils
@@ -72,10 +72,24 @@ def test_C5TC6_DELETE_verificar_status_code_200_al_eliminar_un_customer_con_los_
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_C5TC7_DELETE_verificar_status_code_200_al_eliminar_un_customer_con_todos_los_valores_llenados(setup_function):
+def test_C5TC7_DELETE_verificar_status_code_200_al_eliminar_un_customer_con_todos_los_valores_llenados():
+    test_data = setup_function_request_of_create_full_customer_with_params()
+    assert_response_status(test_data.response_status_code, 200)
+    send_request_of_remove_customer(test_data.full_customer_response_json["id"])
+
+
+@pytest.mark.functional
+@pytest.mark.regression
+def test_CG6TC8_GET_verificar_status_code_401_al_eliminar_un_customer_sin_token_de_autorizacion(setup_function):
     email = Utils.get_random_email()
     firstname = StaticData.firstname.value
     lastname = StaticData.lastname.value
     send_request_of_create_a_customer(email, firstname, lastname)
-    assert_response_status(TestData.response_status_code, 200)
+    assert_response_status(TestData.response_status_code, 401)
+    #no funciona
 
+
+@pytest.mark.functional
+@pytest.mark.regression
+def test_C5TC9_DELETE_validar_esquema_status_code_200_al_eliminar_un_customer_nuevo(setup_module)
+    assert_schemas(TestData.module_response_json, 'post_create_customer.json')
