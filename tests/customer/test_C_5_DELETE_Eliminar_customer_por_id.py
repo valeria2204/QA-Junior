@@ -103,7 +103,7 @@ def test_C5TC11_DELETE_validar_esquema_status_code_400_al_eliminar_un_customer_c
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C5TC12_DELETE_validar_esquema_status_code_404_al_eliminar_un_Customer_con_customer_id_vacio(setup_function):
-    customer_id = StaticData.empty_name.value
+    customer_id = ""
     response = send_request_of_remove_customer(customer_id)
     assert_schemas(response, SchemaName.response_status_code_400_type_value_is_invalid.value)
 
