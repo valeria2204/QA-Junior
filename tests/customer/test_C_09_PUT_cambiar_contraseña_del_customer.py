@@ -28,7 +28,7 @@ def test_C9TC2_PUT_Validar_esquema_status_code_400_cuando_se_cambia_password_de_
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC3_PUT_Verificar_status_code_401_cuando_el_cambio_de_password_para_el_parametro_old_passsword_no_es_valido(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), old_password="incorrecto")
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), old_password=Utils.get_random_letters(12))
     assert_response_status(TestData.response_status_code, 401)
 
 
@@ -36,7 +36,7 @@ def test_C9TC3_PUT_Verificar_status_code_401_cuando_el_cambio_de_password_para_e
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC4_PUT_Validar_esquema_status_code_401_cuando_el_cambio_de_password_para_el_parametro_old_password_no_es_valido(setup_module_customer_with_account):
-    response_json = send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), old_password="incorrecto")
+    response_json = send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), old_password=Utils.get_random_letters(12))
     assert_schemas(response_json, 'put_update_password_customer.json')
 
 
@@ -53,7 +53,7 @@ def test_C9TC5_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_cus
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC6_PUT_verificar_status_code_401_cuando_el_cambio_de_password_de_customer_con_el_parametro_old_password_vacio(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), "")
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), old_password=StaticData.empty_name)
     assert_response_status(TestData.response_status_code, 401)
 
 
