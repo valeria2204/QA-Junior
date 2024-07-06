@@ -58,6 +58,7 @@ class Utils:
     @staticmethod
     def get_random_password(length):
         characters = string.ascii_letters + string.digits + string.punctuation
-        password = random.choices(characters, k=length)
+        password = "".join(random.choices(characters, k=length))
+        password = password.replace('~', "")
         return "".join(password)
 
