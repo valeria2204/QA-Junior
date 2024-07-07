@@ -51,13 +51,16 @@ def send_request_of_create_a_customer_group(code):
     return response.json()
 
 
-def send_request_of_remove_customer_group(group_id):
-    url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER_GROUP.value.replace(URIComplement.GROUP_ID_KEY_NAME.value, f"{group_id}")}"
+def send_request_of_remove_customer_group(group_id, token=None, method="DELETE"):
+    url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER_GROUP.value}".replace(
+        URIComplement.GROUP_ID_KEY_NAME.value, f"{group_id}")
 
     payload = {}
-    headers = header_authorization(TestData.token)
-    response = requests.request(Method.DELETE.value, url, headers=headers, data=payload)
+    if token is None:
+        token = TestData.token
+    headers = header_authorization(token)
 
+    response = requests.request(method, url, headers=headers, data=payload)
     TestData.response_status_code = response.status_code
     return response.json()
 
@@ -157,4 +160,5 @@ def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_i
 
     TestData.response_status_code = response.status_code
     return response.json()
+
 

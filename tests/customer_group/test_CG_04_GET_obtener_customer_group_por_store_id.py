@@ -67,7 +67,7 @@ def test_CG04_TC6_GET_verificar_la_obtencion_del_customer_group_por_defecto_con_
 def test_CG04_TC7_GET_verificar_la_obtencion_del_customer_group_por_defecto_con_storeId_valido_cuando_se_usa_el_metodo_put(setup_data):
     send_request_of_obtain_default_customer_group_by_store_id(StaticData.group_id.value, TestData.token_all_access, Method.PUT.value)
 
-    assert_response_status(TestData.response_status_code, 404)
+    assert_response_status(TestData.response_status_code, 200)
 
 
 @pytest.mark.regression
