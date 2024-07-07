@@ -13,6 +13,18 @@ from tests.helpers.utils import Utils
 
 
 @pytest.fixture(scope="function")
+def teardown_function_remove_customer():
+    TestData.token = get_token_login() if TestData.token is None else TestData.token
+
+    def teardown():
+        if "id" in TestData.function_response_json:
+            send_request_of_remove_customer(TestData.function_response_json["id"])
+
+    yield TestData.token
+    teardown()
+
+
+@pytest.fixture(scope="function")
 def setup_function():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
