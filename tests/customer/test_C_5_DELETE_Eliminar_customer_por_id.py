@@ -21,7 +21,7 @@ def test_C5TC1_DELETE_verificar_status_code_200_al_eliminar_un_customer_nuevo(se
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C5TC2_DELETE_verificar_status_code_400_al_eliminar_un_customer_con_customer_id_invalido_de_tipo_simbolo(setup_function):
-    customer_id = Utils.get_random_symbols(5)
+    customer_id = StaticData.symbols.value
     send_request_of_remove_customer(customer_id)
     assert_response_status(TestData.response_status_code, 400)
 
