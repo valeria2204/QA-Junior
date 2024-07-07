@@ -3,6 +3,7 @@ import pytest
 from src.assertions.assertions import assert_response_status
 from src.assertions.assertions_schema import assert_schemas
 from src.testdata import TestData
+
 from tests.customer.setup import send_request_of_update_password_of_a_customer, setup_module_customer_with_account
 from tests.helpers.utils import Utils
 from src.enums.static_data import StaticData
