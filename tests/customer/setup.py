@@ -27,16 +27,17 @@ def teardown_function_remove_customer():
 @pytest.fixture(scope="function")
 def setup_function():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
-    TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.random_email = f"{Utils().get_random_alphanumeric(11)}@gmail.com"
     TestData.function_response_json = send_request_of_create_a_customer(TestData.random_email,
                                                                         StaticData.firstname.value,
-                                                                        StaticData.lastname.value)
+                                                                        StaticData.lastname.value
+                                                                        )
 
     def teardown():
-        send_request_of_remove_customer(TestData.function_response_json["id"])
+        if "id" in TestData.function_response_json:
+            send_request_of_remove_customer(TestData.function_response_json["id"])
     yield TestData.token
     teardown()
-
 
 @pytest.fixture(scope="module")
 def setup_module_customer_with_account():
@@ -200,6 +201,8 @@ def send_request_of_create_a_customer(
     response = requests.request(Method.POST.value, url, headers=headers, data=json.dumps(payload))
 
     TestData.response_status_code = response.status_code
+    print(response.status_code)
+    print(response.text)
     return json.loads(response.text)
 
 
