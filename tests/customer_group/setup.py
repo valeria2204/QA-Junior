@@ -1,7 +1,6 @@
 import json
 
 import pytest
-import requests
 
 from src.enums.method import Method
 from src.enums.uri import URIComplement
@@ -15,6 +14,7 @@ from tests.helpers.utils import Utils
 def setup_function():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_value = Utils().get_random_alphanumeric(5)
+    TestData.function_response_json = None
     TestData.function_response_json = send_request_of_create_a_customer_group(f"CODE_{TestData.random_value}")
 
     def teardown():
@@ -27,6 +27,7 @@ def setup_function():
 def setup_module():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_value = Utils().get_random_alphanumeric(5)
+    TestData.module_response_json = None
     TestData.module_response_json = send_request_of_create_a_customer_group(f"CODE_{TestData.random_value}")
 
     def teardown():
@@ -45,7 +46,7 @@ def send_request_of_create_a_customer_group(code):
     })
 
     headers = header_content_type_authorization(TestData.token)
-    response = requests.request(Method.POST.value, url, headers=headers, data=payload)
+    response = TestData.request_client(Method.POST.value, url, headers, payload).run()
     TestData.response_status_code = response.status_code
 
     return response.json()
@@ -59,8 +60,7 @@ def send_request_of_remove_customer_group(group_id, token=None, method="DELETE")
     if token is None:
         token = TestData.token
     headers = header_authorization(token)
-
-    response = requests.request(method, url, headers=headers, data=payload)
+    response = TestData.request_client(method, url, headers, payload).run()
     TestData.response_status_code = response.status_code
     return response.json()
 
@@ -91,7 +91,7 @@ def send_request_of_obtain_customer_groups_by_search_criterias(current_page=None
     if headers is None:
         headers = header_authorization(token)
 
-    response = requests.request(method, url, headers=headers, data=payload, params=params)
+    response = TestData.request_client(method, url, headers, payload, params).run()
 
     TestData.response_status_code = response.status_code
     return response.json()
@@ -105,7 +105,7 @@ def send_request_of_obtain_customer_group_by_id(group_id, token=None):
     if token is None:
         token = TestData.token
     headers = header_authorization(token)
-    response = requests.request(Method.GET.value, url, headers=headers, data=payload)
+    response = TestData.request_client(Method.GET.value, url, headers, payload).run()
     TestData.response_status_code = response.status_code
     return response.json()
 
@@ -121,7 +121,7 @@ def send_request_of_obtain_default_customer_group_by(token=None, headers=None, p
         headers = header_authorization(token)
     if last_parameter is not None:
         url = url + last_parameter
-    response = requests.request(Method.GET.value, url, headers=headers, data=payload)
+    response = TestData.request_client(Method.GET.value, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
     return response.json()
@@ -140,7 +140,7 @@ def send_request_of_obtain_default_customer_group_by_store_id(store_id, token=No
         headers = header_authorization(token)
     if method is None:
         method = Method.GET.value
-    response = requests.request(method, url, headers=headers, data=payload)
+    response = TestData.request_client(method, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
     return response.json()
@@ -156,9 +156,7 @@ def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_i
         method = Method.GET.value
     payload = {}
     headers = header_authorization(token)
-    response = requests.request(method, url, headers=headers, data=payload)
+    response = TestData.request_client(method, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
     return response.json()
-
-

@@ -1,6 +1,8 @@
 import json
 import os
 
+from src.method.method_factory import MethodFactory
+
 
 class TestData:
     module_response_json = None
@@ -24,7 +26,16 @@ class TestData:
             cls.__instance = \
                 super(TestData, cls).__new__(cls)
 
-
+    @staticmethod
+    def request_client(method_name, url, headers=None, payload=None, params=None):
+        if params is None:
+            params = {}
+        if payload is None:
+            payload = {}
+        if headers is None:
+            headers = {}
+        request_factory = MethodFactory()
+        return request_factory.create_request('http_request', method_name, url, headers, payload, params)
 
     @staticmethod
     def load_attributes_from_json():
