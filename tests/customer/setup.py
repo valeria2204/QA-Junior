@@ -1,7 +1,6 @@
 import json
 
 import pytest
-import requests
 
 from src.enums.method import Method
 from src.enums.static_data import StaticData
@@ -27,7 +26,8 @@ def teardown_function_remove_customer():
 @pytest.fixture(scope="function")
 def setup_function():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
-    TestData.random_email = f"{Utils().get_random_alphanumeric(11)}@gmail.com"
+    TestData.function_response_json = None
+    TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
     TestData.function_response_json = send_request_of_create_a_customer(TestData.random_email,
                                                                         StaticData.firstname.value,
                                                                         StaticData.lastname.value
@@ -43,6 +43,7 @@ def setup_function():
 def setup_module_customer_with_account():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.module_response_json = None
     TestData.module_response_json = send_request_of_create_a_customer(
         TestData.random_email
         , StaticData.firstname.value
@@ -77,6 +78,7 @@ def setup_module_customer_with_account():
 def setup_function_full_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.function_response_json = None
     TestData.function_response_json = send_request_of_create_a_customer(TestData.random_email
                                                                         , StaticData.firstname.value
                                                                         , StaticData.lastname.value
@@ -109,6 +111,7 @@ def setup_function_full_customer():
 def setup_module():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.module_response_json = None
     TestData.module_response_json = send_request_of_create_a_customer(TestData.random_email,
                                                                         StaticData.firstname.value,
                                                                         StaticData.lastname.value)
@@ -124,8 +127,8 @@ def send_request_of_remove_customer(customer_id, token=None):
     if token is None:
         token = TestData.token
     payload = {}
-    headers = header_authorization(token)
-    response = requests.request(Method.DELETE.value, url, headers=headers, data=payload)
+    headers = header_authorization(TestData.token)
+    response = TestData.request_client(Method.DELETE.value, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
     return response.json()
@@ -198,11 +201,9 @@ def send_request_of_create_a_customer(
         payload[StaticData.redirectUrl.name] = redirect_url
 
     headers = header_content_type_authorization(TestData.token)
-    response = requests.request(Method.POST.value, url, headers=headers, data=json.dumps(payload))
+    response = TestData.request_client(Method.POST.value, url, headers, json.dumps(payload)).run()
 
     TestData.response_status_code = response.status_code
-    print(response.status_code)
-    print(response.text)
     return json.loads(response.text)
 
 
@@ -211,7 +212,7 @@ def send_request_for_assign_a_new_cart_to_a_customer(customer_id):
 
     payload = {}
     headers = header_authorization(TestData.token)
-    response = requests.request(Method.POST.value, url, headers=headers, data=payload)
+    response = TestData.request_client(Method.POST.value, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
     return response.json()
@@ -229,7 +230,7 @@ def send_request_of_update_password_of_a_customer(customer_id, new_password, old
     })
 
     headers = header_content_type_authorization(TestData.token)
-    response = requests.request(Method.PUT.value, url, headers=headers, data=payload, params=params)
+    response = TestData.request_client(Method.PUT.value, url, headers, payload, params).run()
     TestData.response_status_code = response.status_code
 
     return response.json()

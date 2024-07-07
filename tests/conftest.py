@@ -1,6 +1,5 @@
 import json
 import pytest
-import requests
 
 from src.enums.method import Method
 from src.enums.uri import URIComplement
@@ -21,6 +20,6 @@ def get_token_login():
         "username": TestData.username,
         "password": TestData.password
     })
-    response = requests.request(Method.POST.value, url, headers=headers, data=payload)
+    response = TestData.request_client(Method.POST.value, url, headers, payload).run()
     return response.json()
 
