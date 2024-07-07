@@ -25,3 +25,4 @@ class StaticData(Enum):
     password = "Demo123#"
     redirectUrl = "string"
     non_existing_id = 99999
+    symbols = "$$$"
