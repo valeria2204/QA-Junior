@@ -112,4 +112,3 @@ def test_C9TC12_PUT_Verificar_status_code_400_cuando_se_cambia_password_de_custo
 def test_C9TC13_PUT_Verificar_status_code_200_cuando_se_cambia_password_de_customer_con_valores_validos(setup_module_customer_with_account):
     send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), StaticData.password.value)
     assert_response_status(TestData.response_status_code, 200)
-
