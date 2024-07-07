@@ -85,3 +85,33 @@ def test_CG1TC5_POST_Crear_nuevo_Customer_Group_con_datos_invalidos_en_el_body(s
     {"algun": "aleatorio"})
     send_request_of_create_a_customer_group({}, payload=payload)
     assert_response_status(TestData.response_status_code, 400)
+
+@pytest.mark.smoke
+@pytest.mark.functional
+@pytest.mark.regression
+def test_CG1TC6_POST_Crear_nuevo_Customer_Group_con_campo_vacio_en_el_code(setup_data):
+    payload = json.dumps({
+      "group": {
+        "code": "",
+        "tax_class_id":3
+
+      }
+    })
+    send_request_of_create_a_customer_group({}, payload=payload)
+    assert_response_status(TestData.response_status_code, 400)
+    assert "is required" in TestData.module_response_json["message"]
+
+@pytest.mark.smoke
+@pytest.mark.functional
+@pytest.mark.regression
+def test_CG1TC7_POST_Crear_nuevo_Customer_Group_con_un_string_en_tax_class_id(setup_data):
+    payload = json.dumps({
+        "group": {
+            "code": "ejemplo",
+            "tax_class_id": ""
+
+        }
+    })
+    send_request_of_create_a_customer_group({}, payload=payload)
+    assert_response_status(TestData.response_status_code, 400)
+    assert "value's type is invalid" in TestData.module_response_json["message"]
