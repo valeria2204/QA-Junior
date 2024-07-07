@@ -13,6 +13,18 @@ from tests.helpers.utils import Utils
 
 
 @pytest.fixture(scope="function")
+def teardown_function_remove_customer():
+    TestData.token = get_token_login() if TestData.token is None else TestData.token
+
+    def teardown():
+        if "id" in TestData.function_response_json:
+            send_request_of_remove_customer(TestData.function_response_json["id"])
+
+    yield TestData.token
+    teardown()
+
+
+@pytest.fixture(scope="function")
 def setup_function():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
@@ -24,6 +36,40 @@ def setup_function():
         send_request_of_remove_customer(TestData.function_response_json["id"])
     yield TestData.token
     teardown()
+
+
+@pytest.fixture(scope="module")
+def setup_module_customer_with_account():
+    TestData.token = get_token_login() if TestData.token is None else TestData.token
+    TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.module_response_json = send_request_of_create_a_customer(
+        TestData.random_email
+        , StaticData.firstname.value
+        , StaticData.lastname.value
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , None
+        , StaticData.password.value
+        , None
+    )
+
+    def teardown():
+        send_request_of_remove_customer(TestData.module_response_json["id"])
+    yield TestData.token
+    teardown()
+
 
 @pytest.fixture(scope="module")
 def setup_module():
