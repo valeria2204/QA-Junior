@@ -14,7 +14,7 @@ from tests.conftest import setup_data
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_C14TC1_DELETE_verificar_status_code_200_al_eliminar_un_customer_nuevo(setup_data):
+def test_C14TC1_DELETE_verificar_status_code_200_al_eliminar_un_customer_nuevo(setup_function):
     email = Utils.get_random_email()
     firstname = StaticData.firstname.value
     lastname = StaticData.lastname.value
