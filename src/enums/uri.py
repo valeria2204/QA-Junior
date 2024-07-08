@@ -22,6 +22,7 @@ class URIComplement(Enum):
     DELETE_CUSTOMER_GROUP = "rest/default/V1/customerGroups/{group_id}"
 
     PUT_PASSWORD_CUSTOMER = "rest/default/V1/customers/me/password"
+    PUT_CUSTOMER_GROUP = "rest/default/V1/customerGroups/{group_id}"
 
     STORE_ID_KEY_NAME = "{store_id}"
     GROUP_ID_KEY_NAME = "{group_id}"
