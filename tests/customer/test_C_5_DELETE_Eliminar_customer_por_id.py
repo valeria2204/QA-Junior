@@ -117,6 +117,6 @@ def test_C5TC13_DELETE_validar_esquema_status_code_404_al_eliminar_un_customer_c
 
 @pytest.mark.functional
 @pytest.mark.regression
-def test_C5TC14_DELETE_validar_esquema_status_code_401_cuando_se_asigna_un_carrito_a_un_customer_sin_token_de_autorizacion(setup_function):
+def test_C5TC14_DELETE_validar_esquema_status_code_401_al_eliminar_un_customer_sin_token_de_autorizacion(setup_function):
     response = send_request_of_remove_customer(TestData.function_response_json["id"], TestData.token_no_valid)
     assert_schemas(response, SchemaName.response_status_401_unauthorized.value)
