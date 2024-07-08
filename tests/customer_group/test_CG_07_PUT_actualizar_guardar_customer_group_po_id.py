@@ -6,6 +6,7 @@ from tests.customer_group.setup import send_request_of_update_customer_group, se
 from src.enums.static_data import StaticData
 from tests.helpers.utils import Utils
 
+
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
