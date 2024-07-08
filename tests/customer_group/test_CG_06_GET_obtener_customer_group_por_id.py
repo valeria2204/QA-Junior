@@ -7,6 +7,7 @@ from src.enums.static_data import StaticData
 from src.testdata import TestData
 from tests.conftest import setup_data
 from tests.customer_group.setup import setup_module, send_request_of_obtain_customer_group_by_id
+from tests.helpers.utils import Utils
 
 
 @pytest.mark.smoke
@@ -28,7 +29,7 @@ def test_CG6TC2_GET_validar_esquema_obtencion_exitosa_de_customer_group_por_id(s
 @pytest.mark.functional
 @pytest.mark.regression
 def test_CG6TC3_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_con_id_alfabetico(setup_data):
-    group_id = "ASD"
+    group_id = Utils.get_random_letters(3)
     send_request_of_obtain_customer_group_by_id(group_id)
     assert_response_status(TestData.response_status_code, 400)
 
@@ -36,7 +37,7 @@ def test_CG6TC3_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_
 @pytest.mark.functional
 @pytest.mark.regression
 def test_CG6TC4_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_con_id_de_caracter_especial(setup_data):
-    group_id = "@"
+    group_id = StaticData.symbols.value
     send_request_of_obtain_customer_group_by_id(group_id)
     assert_response_status(TestData.response_status_code, 400)
 
@@ -44,7 +45,7 @@ def test_CG6TC4_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_
 @pytest.mark.functional
 @pytest.mark.regression
 def test_CG6TC5_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_con_id_vacio(setup_data):
-    group_id = ""
+    group_id = StaticData.empty_name.value
     send_request_of_obtain_customer_group_by_id(group_id)
     assert_response_status(TestData.response_status_code, 404)
 
@@ -52,7 +53,7 @@ def test_CG6TC5_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_
 @pytest.mark.functional
 @pytest.mark.regression
 def test_CG6TC6_GET_verificar_respuesta_de_error_al_solicitar_un_customer_group_con_id_no_existente(setup_data):
-    group_id = "52542542542"
+    group_id = Utils.get_random_numerics(10)
     send_request_of_obtain_customer_group_by_id(group_id)
     assert_response_status(TestData.response_status_code, 404)
 
