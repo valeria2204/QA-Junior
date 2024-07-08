@@ -69,7 +69,7 @@ def test_C5TC7_DELETE_verificar_status_code_200_al_eliminar_un_customer_con_todo
 
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG6TC8_GET_verificar_status_code_401_al_eliminar_un_customer_sin_token_de_autorizacion(setup_function):
+def test_C6TC8_DELETE_verificar_status_code_401_al_eliminar_un_customer_sin_token_de_autorizacion(setup_function):
     send_request_of_remove_customer(TestData.function_response_json["id"], TestData.token_no_valid)
     assert_response_status(TestData.response_status_code, 401)
 

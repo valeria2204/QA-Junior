@@ -122,6 +122,39 @@ def setup_module():
     teardown()
 
 
+@pytest.fixture(scope="module")
+def setup_module_full_customer():
+    TestData.token = get_token_login() if TestData.token is None else TestData.token
+    TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
+    TestData.module_response_json = None
+    TestData.module_response_json = send_request_of_create_a_customer(TestData.random_email
+                                                                        , StaticData.firstname.value
+                                                                        , StaticData.lastname.value
+                                                                        , StaticData.group_id.value
+                                                                        , StaticData.default_billing.value
+                                                                        , StaticData.default_shipping.value
+                                                                        , StaticData.created_at.value
+                                                                        , StaticData.updated_at.value
+                                                                        , StaticData.created_in.value
+                                                                        , StaticData.dob.value
+                                                                        , StaticData.middlename.value
+                                                                        , StaticData.prefix.value
+                                                                        , StaticData.suffix.value
+                                                                        , StaticData.gender.value
+                                                                        , StaticData.store_id.value
+                                                                        , StaticData.website_id.value
+                                                                        , StaticData.addresses.value
+                                                                        , StaticData.disable_auto_group_change.value
+                                                                        , StaticData.password.value
+                                                                        , StaticData.redirectUrl.value
+                                                                        )
+
+    def teardown():
+        send_request_of_remove_customer(TestData.module_response_json["id"])
+    yield TestData.token
+    teardown()
+
+
 def send_request_of_remove_customer(customer_id, token=None):
     url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER.value.replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, str(customer_id))}"
     if token is None:
@@ -207,16 +240,16 @@ def send_request_of_create_a_customer(
     return json.loads(response.text)
 
 
-def send_request_for_assign_a_new_cart_to_a_customer(customer_id):
+def send_request_for_assign_a_new_cart_to_a_customer(customer_id, token=None):
     url = f"{TestData.base_url}{URIComplement.POST_CART_TO_CUSTOMER.value.replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, str(customer_id))}"
-
+    if token is None:
+        token = TestData.token
     payload = {}
-    headers = header_authorization(TestData.token)
+    headers = header_authorization(token) #TestData.token
     response = TestData.request_client(Method.POST.value, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
     return response.json()
-
 
 def send_request_of_update_password_of_a_customer(customer_id, new_password, old_password):
     url = f"{TestData.base_url}{URIComplement.PUT_PASSWORD_CUSTOMER.value}".replace(

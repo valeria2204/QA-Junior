@@ -9,3 +9,4 @@ class SchemaName(Enum):
     response_status_code_404_no_such_entity = "response_status_code_404_no_such_entity.json"
     response_status_code_404_request_does_not_match = "response_status_code_404_request_does_not_match.json"
     post_customer_full_information = "post_customer_full_information.json"
+    response_status_401_unauthorized = "response_status_401_unauthorized.json"
