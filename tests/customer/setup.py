@@ -127,7 +127,7 @@ def send_request_of_remove_customer(customer_id, token=None):
     if token is None:
         token = TestData.token
     payload = {}
-    headers = header_authorization(TestData.token)
+    headers = header_authorization(token) #TestData.token
     response = TestData.request_client(Method.DELETE.value, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
