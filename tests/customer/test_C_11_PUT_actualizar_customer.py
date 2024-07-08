@@ -198,7 +198,7 @@ def test_C11TC13_PUT_verificar_la_actualizacion_de_customer_con_el_group_id_igua
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C11TC14_PUT_verificar_la_actualizacion_de_customer_con_el_group_id_igual_a_un_id_inexistente(setup_function):
-    TestData.function_response_json[StaticData.group_id.name] = Utils.get_random_numerics(10)
+    TestData.function_response_json[StaticData.group_id.name] = StaticData.non_existing_id.value
     response_json = send_request_of_update_a_customer(TestData.function_response_json[StaticData.id.name], TestData.function_response_json)
 
     assert_response_status(TestData.response_status_code, 200)
@@ -240,7 +240,7 @@ def test_C11TC17_PUT_verificar_la_actualizacion_de_customer_con_el_parametro_cre
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C11TC18_PUT_verificar_la_actualizacion_de_customer_con_el_parametro_gender_igual_a_un_id_inexistente(setup_function):
-    TestData.function_response_json[f'{StaticData.gender=}'.split('=')[0].split('.')[1]] = Utils.get_random_symbols(5)
+    TestData.function_response_json[f'{StaticData.gender=}'.split('=')[0].split('.')[1]] = StaticData.non_existing_id.value
     response_json = send_request_of_update_a_customer(TestData.function_response_json[StaticData.id.name], TestData.function_response_json)
 
     assert_response_status(TestData.response_status_code, 400)
