@@ -26,3 +26,4 @@ class StaticData(Enum):
     redirectUrl = "string"
     non_existing_id = 99999
     symbols = "$$$"
+    tax_class_id = 3

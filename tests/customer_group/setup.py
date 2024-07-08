@@ -160,3 +160,22 @@ def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_i
 
     TestData.response_status_code = response.status_code
     return response.json()
+
+
+def send_request_of_update_code_of_customer_group(group_id, code_group, tax_class_id, token=None):
+    url = f"{TestData.base_url}{URIComplement.PUT_CUSTOMER_GROUP.value}".replace(
+        URIComplement.GROUP_ID_KEY_NAME.value, f"{group_id}")
+    if token is None:
+        token = TestData.token
+
+    payload = json.dumps({
+        "id": group_id,
+        "code": code_group,
+        "tax_class_id": tax_class_id
+    })
+
+    headers = header_content_type_authorization(token)
+    response = TestData.request_client(Method.PUT.value, url, headers, payload).run()
+    TestData.response_status_code = response.status_code
+
+    return response.json()
