@@ -38,8 +38,8 @@ class Utils:
     @staticmethod
     def get_random_symbols(length):
         random_symbols = "".join(random.choices(string.punctuation, k=length))
-        random_symbols = random_symbols.replace("#", "")
-        random_symbols = random_symbols.replace("?", "")
+        random_symbols = random_symbols.replace("#", "@")
+        random_symbols = random_symbols.replace("?", "@")
         return random_symbols
 
     @staticmethod

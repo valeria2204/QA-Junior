@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "resources"
+      ]
+    }
+  },
+  "required": [
+    "message",
+    "parameters"
+  ]
+}
