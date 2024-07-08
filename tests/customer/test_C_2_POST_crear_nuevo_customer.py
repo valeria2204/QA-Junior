@@ -117,7 +117,7 @@ def test_C2TC7_POST_verificar_status_code_400_cuando_se_crea_nueva_cuenta_custom
 @pytest.mark.regression
 def test_C2TC8_POST_verificar_status_code_400_cuando_se_crea_nueva_cuenta_customer_con_valor_solo_simbolos_para_email(
         teardown_function_remove_customer):
-    TestData.function_response_json = send_request_of_create_a_customer(Utils.get_random_symbols(5), StaticData.firstname.value, StaticData.lastname.value)
+    TestData.function_response_json = send_request_of_create_a_customer(StaticData.symbols.value, StaticData.firstname.value, StaticData.lastname.value)
     assert_response_status(TestData.response_status_code, 400)
     assert_schemas(TestData.function_response_json, SchemaName.response_status_code_400_type_value_is_invalid.value)
     assert_equals(TestData.function_response_json["message"], '"Email" is not a valid email address.')
