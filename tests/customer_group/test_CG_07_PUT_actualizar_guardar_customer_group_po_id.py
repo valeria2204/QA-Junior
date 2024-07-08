@@ -68,9 +68,9 @@ def test_CG7TC7_PUT_verificar_status_code_400_cuando_se_actualiza_customer_group
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG7TC8_PUT_verificar_status_code_400_cuando_se_actualiza_customer_group_con_el_code_tiene_mas_de_256_caracteres(setup_module):
-    send_request_of_update_customer_group(TestData.module_response_json["id"], Utils.get_random_letters(257), StaticData.tax_class_id.value)
-    assert_response_status(TestData.response_status_code, 400)
+def test_CG7TC8_PUT_verificar_status_code_200_cuando_se_actualiza_customer_group_con_el_code_tiene_maximo_32_caracteres(setup_module):
+    send_request_of_update_customer_group(TestData.module_response_json["id"], Utils.get_random_letters(35), StaticData.tax_class_id.value)
+    assert_response_status(TestData.response_status_code, 200)
 
 
 @pytest.mark.smoke
