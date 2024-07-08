@@ -11,6 +11,18 @@ from tests.helpers.utils import Utils
 
 
 @pytest.fixture(scope="function")
+def teardown_function_remove_customer_group():
+    TestData.token = get_token_login() if TestData.token is None else TestData.token
+
+    def teardown():
+        if "id" in TestData.function_response_json:
+            send_request_of_remove_customer_group(TestData.function_response_json["id"])
+
+    yield TestData.token
+    teardown()
+
+
+@pytest.fixture(scope="function")
 def setup_function():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_value = Utils().get_random_alphanumeric(5)
@@ -37,6 +49,7 @@ def setup_module():
 
 
 def send_request_of_create_a_customer_group(code):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.POST_CUSTOMER_GROUP.value}"
 
     payload = json.dumps({
@@ -53,6 +66,7 @@ def send_request_of_create_a_customer_group(code):
 
 
 def send_request_of_remove_customer_group(group_id, token=None, method="DELETE"):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER_GROUP.value}".replace(
         URIComplement.GROUP_ID_KEY_NAME.value, f"{group_id}")
 
@@ -68,6 +82,7 @@ def send_request_of_remove_customer_group(group_id, token=None, method="DELETE")
 def send_request_of_obtain_customer_groups_by_search_criterias(current_page=None, page_size=None, field=None,
                                                                value=None, condition=None, token=None, method=None, headers=None,
                                                                payload=None):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.GET_SEARCH_CUSTOMER_GROUP.value}"
 
     params = {}
@@ -98,6 +113,7 @@ def send_request_of_obtain_customer_groups_by_search_criterias(current_page=None
 
 
 def send_request_of_obtain_customer_group_by_id(group_id, token=None):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_ID.value}".replace(
         URIComplement.GROUP_ID_KEY_NAME.value, str(group_id))
 
@@ -111,6 +127,7 @@ def send_request_of_obtain_customer_group_by_id(group_id, token=None):
 
 
 def send_request_of_obtain_default_customer_group_by(token=None, headers=None, payload=None, last_parameter=None):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_DEFAULT.value}"
 
     if token is None:
@@ -129,6 +146,7 @@ def send_request_of_obtain_default_customer_group_by(token=None, headers=None, p
 
 def send_request_of_obtain_default_customer_group_by_store_id(store_id, token=None, method=None, headers=None,
                                                               payload=None):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_GROUP_BY_STORE_ID.value}".replace(
         URIComplement.STORE_ID_KEY_NAME.value, f"{store_id}")
 
@@ -147,6 +165,7 @@ def send_request_of_obtain_default_customer_group_by_store_id(store_id, token=No
 
 
 def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_id, method=None, token=None):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.GET_CHECK_DELETION_CUSTOMER_GROUP.value}".replace(
         URIComplement.GROUP_ID_KEY_NAME.value, group_id)
 

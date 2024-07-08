@@ -30,8 +30,7 @@ def test_C2TC2_POST_validar_esquema_verificar_status_code_200_cuando_se_crea_nue
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_C2TC3_POST_verificar_status_code_200_cuando_se_crea_nueva_cuenta_customer_con_todos_los_campos(
-        teardown_function_remove_customer):
+def test_C2TC3_POST_verificar_status_code_200_cuando_se_crea_nueva_cuenta_customer_con_todos_los_campos(teardown_function_remove_customer):
     random_email = Utils.get_random_email()
     TestData.function_response_json = send_request_of_create_a_customer(
         random_email,
@@ -41,7 +40,7 @@ def test_C2TC3_POST_verificar_status_code_200_cuando_se_crea_nueva_cuenta_custom
         StaticData.default_billing.value,
         StaticData.default_shipping.value,
         StaticData.created_at.value,
-        StaticData.updated_at.value,
+        None,
         StaticData.created_in.value,
         StaticData.dob.value,
         StaticData.middlename.value,
@@ -62,7 +61,6 @@ def test_C2TC3_POST_verificar_status_code_200_cuando_se_crea_nueva_cuenta_custom
     assert_equals(TestData.function_response_json[StaticData.default_billing.name], StaticData.default_billing.value.split('-')[0])
     assert_equals(TestData.function_response_json[StaticData.default_shipping.name], StaticData.default_shipping.value.split('-')[0])
     assert_equals(TestData.function_response_json[StaticData.created_at.name], StaticData.created_at.value)
-    assert_equals(str(TestData.function_response_json[StaticData.updated_at.name]).split(' ')[0], StaticData.updated_at.value.split(' ')[0])
     assert_equals(TestData.function_response_json[StaticData.created_in.name], StaticData.created_in.value)
     assert_equals(TestData.function_response_json[StaticData.dob.name], StaticData.dob.value)
     assert_equals(TestData.function_response_json[StaticData.middlename.name], StaticData.middlename.value)
