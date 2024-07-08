@@ -167,7 +167,7 @@ def send_request_of_obtain_default_customer_group_by_store_id(store_id, token=No
 def send_request_of_check_if_customer_group_can_be_deleted_with_group_id(group_id, method=None, token=None):
     TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.GET_CHECK_DELETION_CUSTOMER_GROUP.value}".replace(
-        URIComplement.GROUP_ID_KEY_NAME.value, group_id)
+        URIComplement.GROUP_ID_KEY_NAME.value, f"{group_id}")
 
     if token is None:
         token = TestData.token

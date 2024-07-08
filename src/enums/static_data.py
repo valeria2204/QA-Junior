@@ -31,3 +31,8 @@ class StaticData(Enum):
     male = 1
     female = 2
     second_group_id = 2
+    request_does_not_match_any_route = "Request does not match any route."
+    the_consumer_isnt_authorized_to_access_resources = "The consumer isn't authorized to access %resources."
+    no_such_entity_with_fieldName_equal_fieldValue = "No such entity with %fieldName = %fieldValue"
+    the_values_type_is_invalid = "The \"{value}\" value's type is invalid. The \"int\" type was expected. Verify and try again."
+    value = "{value}"
