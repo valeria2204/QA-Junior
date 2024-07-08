@@ -40,16 +40,31 @@ class Utils:
         random_symbols = "".join(random.choices(string.punctuation, k=length))
         random_symbols = random_symbols.replace("#", "@")
         random_symbols = random_symbols.replace("?", "@")
+        random_symbols = random_symbols.replace("~", "_")
+        random_symbols = random_symbols.replace(">", "_")
+        random_symbols = random_symbols.replace("/", "_")
+        random_symbols = random_symbols.replace("`", "_")
         return random_symbols
 
     @staticmethod
-    def random_past_date(start=datetime.datetime(2000, 1, 1), end=datetime.datetime.now()):
-        return start + datetime.timedelta(seconds=random.randint(0, int((end - start).total_seconds())))
+    def random_past_date(start=None, end=None):
+        if start is None:
+            start = datetime.datetime(2000, 1, 1)
+        if end is None:
+            end = datetime.datetime.now()
+        past_date = start + datetime.timedelta(seconds=random.randint(0, int((end - start).total_seconds())))
+        return past_date.strftime('%Y-%m-%d %H:%M:%S')
 
 
     @staticmethod
-    def random_future_date(start=datetime.datetime.now(), end=datetime.datetime(3000, 1, 1)):
-        return start + datetime.timedelta(seconds=random.randint(0, int((end - start).total_seconds())))
+    def random_future_date(start=None, end=None):
+
+        if start is None:
+            start = datetime.datetime.now()
+        if end is None:
+            end = datetime.datetime(2100, 1, 1)
+        future_date = start + datetime.timedelta(seconds=random.randint(0, int((end - start).total_seconds())))
+        return future_date.strftime('%Y-%m-%d %H:%M:%S')
 
 
     @staticmethod

@@ -54,7 +54,7 @@ def test_C9TC5_PUT_verificar_status_code_400_cuando_el_cambio_de_password_de_cus
 @pytest.mark.functional
 @pytest.mark.regression
 def test_C9TC6_PUT_verificar_status_code_401_cuando_el_cambio_de_password_de_customer_con_el_parametro_old_password_vacio(setup_module_customer_with_account):
-    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), old_password=StaticData.empty_name)
+    send_request_of_update_password_of_a_customer(TestData.module_response_json["id"], Utils.get_random_password(12), old_password=StaticData.empty_name.value)
     assert_response_status(TestData.response_status_code, 401)
 
 

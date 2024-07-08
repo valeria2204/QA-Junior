@@ -27,3 +27,7 @@ class StaticData(Enum):
     non_existing_id = 99999
     symbols = "$$$"
     tax_class_id = 3
+    id = "id"
+    male = 1
+    female = 2
+    second_group_id = 2

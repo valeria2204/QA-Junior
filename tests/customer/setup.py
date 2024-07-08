@@ -79,27 +79,7 @@ def setup_function_full_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
     TestData.function_response_json = None
-    TestData.function_response_json = send_request_of_create_a_customer(TestData.random_email
-                                                                        , StaticData.firstname.value
-                                                                        , StaticData.lastname.value
-                                                                        , StaticData.group_id.value
-                                                                        , StaticData.default_billing.value
-                                                                        , StaticData.default_shipping.value
-                                                                        , StaticData.created_at.value
-                                                                        , StaticData.updated_at.value
-                                                                        , StaticData.created_in.value
-                                                                        , StaticData.dob.value
-                                                                        , StaticData.middlename.value
-                                                                        , StaticData.prefix.value
-                                                                        , StaticData.suffix.value
-                                                                        , StaticData.gender.value
-                                                                        , StaticData.store_id.value
-                                                                        , StaticData.website_id.value
-                                                                        , StaticData.addresses.value
-                                                                        , StaticData.disable_auto_group_change.value
-                                                                        , StaticData.password.value
-                                                                        , StaticData.redirectUrl.value
-                                                                        )
+    TestData.function_response_json = create_new_customer_with_all_information()
 
     def teardown():
         send_request_of_remove_customer(TestData.function_response_json["id"])
@@ -127,27 +107,7 @@ def setup_module_full_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
     TestData.module_response_json = None
-    TestData.module_response_json = send_request_of_create_a_customer(TestData.random_email
-                                                                        , StaticData.firstname.value
-                                                                        , StaticData.lastname.value
-                                                                        , StaticData.group_id.value
-                                                                        , StaticData.default_billing.value
-                                                                        , StaticData.default_shipping.value
-                                                                        , StaticData.created_at.value
-                                                                        , StaticData.updated_at.value
-                                                                        , StaticData.created_in.value
-                                                                        , StaticData.dob.value
-                                                                        , StaticData.middlename.value
-                                                                        , StaticData.prefix.value
-                                                                        , StaticData.suffix.value
-                                                                        , StaticData.gender.value
-                                                                        , StaticData.store_id.value
-                                                                        , StaticData.website_id.value
-                                                                        , StaticData.addresses.value
-                                                                        , StaticData.disable_auto_group_change.value
-                                                                        , StaticData.password.value
-                                                                        , StaticData.redirectUrl.value
-                                                                        )
+    TestData.module_response_json = create_new_customer_with_all_information()
 
     def teardown():
         send_request_of_remove_customer(TestData.module_response_json["id"])
@@ -156,11 +116,12 @@ def setup_module_full_customer():
 
 
 def send_request_of_remove_customer(customer_id, token=None):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.DELETE_CUSTOMER.value.replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, str(customer_id))}"
     if token is None:
         token = TestData.token
     payload = {}
-    headers = header_authorization(token) #TestData.token
+    headers = header_authorization(token)
     response = TestData.request_client(Method.DELETE.value, url, headers, payload).run()
 
     TestData.response_status_code = response.status_code
@@ -189,9 +150,10 @@ def send_request_of_create_a_customer(
         , password=None
         , redirect_url=None
 ):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.POST_CUSTOMER.value}"
-
-    payload = {StaticData.customer.name: StaticData.customer.value}
+    payload = {}
+    payload = {StaticData.customer.name: {}}
     if email is not None:
         payload[StaticData.customer.name][StaticData.email.name] = email
     if firstname is not None:
@@ -240,7 +202,68 @@ def send_request_of_create_a_customer(
     return json.loads(response.text)
 
 
+def send_request_of_update_a_customer(customer_id, response_json, token=None, method=None):
+    TestData.response_status_code = None
+    url = f"{TestData.base_url}{URIComplement.PUT_CUSTOMER.value}".replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, f"{customer_id}")
+
+    payload = {}
+    payload = {StaticData.customer.name: {}}
+    if StaticData.id.name in response_json:
+        payload[StaticData.customer.name][StaticData.id.name] = response_json[StaticData.id.name]
+    if StaticData.email.name in response_json:
+        payload[StaticData.customer.name][StaticData.email.name] = response_json[StaticData.email.name]
+    if StaticData.firstname.name in response_json:
+        payload[StaticData.customer.name][StaticData.firstname.name] = response_json[StaticData.firstname.name]
+    if StaticData.lastname.name in response_json:
+        payload[StaticData.customer.name][StaticData.lastname.name] = response_json[StaticData.lastname.name]
+    if StaticData.group_id.name in response_json:
+        payload[StaticData.customer.name][StaticData.group_id.name] = response_json[StaticData.group_id.name]
+    if StaticData.default_billing.name in response_json:
+        payload[StaticData.customer.name][StaticData.default_billing.name] = response_json[StaticData.default_billing.name]
+    if StaticData.default_shipping.name in response_json:
+        payload[StaticData.customer.name][StaticData.default_shipping.name] = response_json[StaticData.default_shipping.name]
+    if StaticData.created_at.name in response_json:
+        payload[StaticData.customer.name][StaticData.created_at.name] = response_json[StaticData.created_at.name]
+    if StaticData.updated_at.name in response_json:
+        payload[StaticData.customer.name][StaticData.updated_at.name] = response_json[StaticData.updated_at.name]
+    if StaticData.created_in.name in response_json:
+        payload[StaticData.customer.name][StaticData.created_in.name] = response_json[StaticData.created_in.name]
+    if StaticData.dob.name in response_json:
+        payload[StaticData.customer.name][StaticData.dob.name] = response_json[StaticData.dob.name]
+    if StaticData.middlename.name in response_json:
+        payload[StaticData.customer.name][StaticData.middlename.name] = response_json[StaticData.middlename.name]
+    if StaticData.prefix.name in response_json:
+        payload[StaticData.customer.name][StaticData.prefix.name] = response_json[StaticData.prefix.name]
+    if StaticData.suffix.name in response_json:
+        payload[StaticData.customer.name][StaticData.suffix.name] = response_json[StaticData.suffix.name]
+    if f'{StaticData.gender=}'.split('=')[0].split('.')[1] in response_json:
+        payload[StaticData.customer.name][f'{StaticData.gender=}'.split('=')[0].split('.')[1]] = response_json[f'{StaticData.gender=}'.split('=')[0].split('.')[1]]
+    if f'{StaticData.store_id=}'.split('=')[0].split('.')[1] in response_json:
+        payload[StaticData.customer.name][f'{StaticData.store_id=}'.split('=')[0].split('.')[1]] = response_json[f'{StaticData.store_id=}'.split('=')[0].split('.')[1]]
+    if f'{StaticData.website_id=}'.split('=')[0].split('.')[1] in response_json:
+        payload[StaticData.customer.name][f'{StaticData.website_id=}'.split('=')[0].split('.')[1]] = response_json[f'{StaticData.website_id=}'.split('=')[0].split('.')[1]]
+    if StaticData.addresses.name in response_json:
+        payload[StaticData.customer.name][StaticData.addresses.name] = response_json[StaticData.addresses.name]
+    if StaticData.disable_auto_group_change.name in response_json:
+        payload[StaticData.customer.name][StaticData.disable_auto_group_change.name] = response_json[StaticData.disable_auto_group_change.name]
+    if StaticData.password.name in response_json:
+        payload[StaticData.password.name] = response_json[StaticData.password.name]
+    if StaticData.redirectUrl.name in response_json:
+        payload[StaticData.redirectUrl.name] = response_json[StaticData.redirectUrl.name]
+
+    if token is None:
+        token = TestData.token
+    if method is None:
+        method = Method.PUT.value
+
+    headers = header_content_type_authorization(token)
+    response = TestData.request_client(method, url, headers, json.dumps(payload)).run()
+
+    TestData.response_status_code = response.status_code
+    return response.json()
+
 def send_request_for_assign_a_new_cart_to_a_customer(customer_id, token=None):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.POST_CART_TO_CUSTOMER.value.replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, str(customer_id))}"
     if token is None:
         token = TestData.token
@@ -251,7 +274,9 @@ def send_request_for_assign_a_new_cart_to_a_customer(customer_id, token=None):
     TestData.response_status_code = response.status_code
     return response.json()
 
+
 def send_request_of_update_password_of_a_customer(customer_id, new_password, old_password):
+    TestData.response_status_code = None
     url = f"{TestData.base_url}{URIComplement.PUT_PASSWORD_CUSTOMER.value}".replace(
         URIComplement.CUSTOMER_ID_KEY_NAME.value, f"{customer_id}")
 
@@ -267,3 +292,28 @@ def send_request_of_update_password_of_a_customer(customer_id, new_password, old
     TestData.response_status_code = response.status_code
 
     return response.json()
+
+
+def create_new_customer_with_all_information():
+    return send_request_of_create_a_customer(
+        TestData.random_email
+        , StaticData.firstname.value
+        , StaticData.lastname.value
+        , StaticData.group_id.value
+        , StaticData.default_billing.value
+        , StaticData.default_shipping.value
+        , StaticData.created_at.value
+        , None
+        , StaticData.created_in.value
+        , StaticData.dob.value
+        , StaticData.middlename.value
+        , StaticData.prefix.value
+        , StaticData.suffix.value
+        , StaticData.gender.value
+        , StaticData.store_id.value
+        , StaticData.website_id.value
+        , StaticData.addresses.value
+        , StaticData.disable_auto_group_change.value
+        , StaticData.password.value
+        , StaticData.redirectUrl.value
+    )
