@@ -317,3 +317,17 @@ def create_new_customer_with_all_information():
         , StaticData.password.value
         , StaticData.redirectUrl.value
     )
+
+
+def send_request_obtener_customer_by_id(customer_id, token=None):
+    TestData.response_status_code = None
+    url = f"{TestData.base_url}{URIComplement.GET_CUSTOMER_BY_ID.value.replace(URIComplement.CUSTOMER_ID_KEY_NAME.value, str(customer_id))}"
+    if token is None:
+        token = TestData.token
+    payload = {}
+    headers = header_authorization(token)
+    response = TestData.request_client(Method.GET.value, url, headers, payload).run()
+
+    TestData.response_status_code = response.status_code
+    return response.json()
+

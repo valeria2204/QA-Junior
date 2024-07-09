@@ -17,6 +17,7 @@ class URIComplement(Enum):
     SEARCH_CRITERIA_PARAMETER_PAGE_SIZE = "searchCriteria[pageSize]={page_size}"
     GET_CUSTOMER_GROUP_BY_ID = "rest/default/V1/customerGroups/{group_id}"
     GET_CHECK_DELETION_CUSTOMER_GROUP = "rest/default/V1/customerGroups/{group_id}/permissions"
+    GET_CUSTOMER_BY_ID = "rest/default/V1/customers/{customerId}"
 
     DELETE_CUSTOMER = "rest/default/V1/customers/{customerId}"
     DELETE_CUSTOMER_GROUP = "rest/default/V1/customerGroups/{group_id}"
@@ -24,6 +25,7 @@ class URIComplement(Enum):
     PUT_PASSWORD_CUSTOMER = "rest/default/V1/customers/me/password"
     PUT_CUSTOMER_GROUP = "rest/default/V1/customerGroups/{group_id}"
     PUT_CUSTOMER = "rest/default/V1/customers/{customerId}"
+    PUT_CUSTOMER_GROUP_DEFAULT = "/rest/default/V1/customerGroups/default/{id}"
 
     STORE_ID_KEY_NAME = "{store_id}"
     GROUP_ID_KEY_NAME = "{group_id}"

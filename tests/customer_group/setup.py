@@ -200,3 +200,18 @@ def send_request_of_update_customer_group(group_id, code_group, tax_class_id, to
     TestData.response_status_code = response.status_code
 
     return response.json()
+
+
+def send_request_of_update_customer_group_default(group_id, token=None, method=None):
+    if token is None:
+        token = TestData.token
+    if method is None:
+        method = Method.PUT.value
+    url = f"{TestData.base_url}{URIComplement.PUT_CUSTOMER_GROUP_DEFAULT.value.replace('{id}', str(group_id))}"
+    headers = header_content_type_authorization(token)
+    response = TestData.request_client(method, url, headers=headers).run()
+    TestData.response_status_code = response.status_code
+    return response.json()
+
+
+
