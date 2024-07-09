@@ -15,35 +15,35 @@ def teardown_function_remove_customer_group():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
 
     def teardown():
-        if "id" in TestData.function_response_json:
-            send_request_of_remove_customer_group(TestData.function_response_json["id"])
+        if "id" in TestData.function_response_json_customer_group:
+            send_request_of_remove_customer_group(TestData.function_response_json_customer_group["id"])
 
     yield TestData.token
     teardown()
 
 
 @pytest.fixture(scope="function")
-def setup_function():
+def setup_function_customer_group():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_value = Utils().get_random_alphanumeric(5)
-    TestData.function_response_json = None
-    TestData.function_response_json = send_request_of_create_a_customer_group(f"CODE_{TestData.random_value}")
+    TestData.function_response_json_customer_group = None
+    TestData.function_response_json_customer_group = send_request_of_create_a_customer_group(f"CODE_{TestData.random_value}")
 
     def teardown():
-        send_request_of_remove_customer_group(TestData.function_response_json["id"])
+        send_request_of_remove_customer_group(TestData.function_response_json_customer_group["id"])
     yield TestData.token
     teardown()
 
 
 @pytest.fixture(scope="module")
-def setup_module():
+def setup_module_customer_group():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_value = Utils().get_random_alphanumeric(5)
-    TestData.module_response_json = None
-    TestData.module_response_json = send_request_of_create_a_customer_group(f"CODE_{TestData.random_value}")
+    TestData.module_response_json_customer_group = None
+    TestData.module_response_json_customer_group = send_request_of_create_a_customer_group(f"CODE_{TestData.random_value}")
 
     def teardown():
-        send_request_of_remove_customer_group(TestData.module_response_json["id"])
+        send_request_of_remove_customer_group(TestData.module_response_json_customer_group["id"])
     yield TestData.token
     teardown()
 

@@ -6,23 +6,23 @@ from src.enums.schema_json_name import SchemaName
 from src.enums.static_data import StaticData
 from src.testdata import TestData
 from tests.conftest import setup_data
-from tests.customer_group.setup import setup_module, send_request_of_obtain_customer_group_by_id
+from tests.customer_group.setup import setup_module_customer_group, send_request_of_obtain_customer_group_by_id
 from tests.helpers.utils import Utils
 
 
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG6TC1_GET_verificar_obtencion_exitosa_de_customer_group_por_id(setup_module):
-    send_request_of_obtain_customer_group_by_id(TestData.module_response_json["id"])
+def test_CG6TC1_GET_verificar_obtencion_exitosa_de_customer_group_por_id(setup_module_customer_group):
+    send_request_of_obtain_customer_group_by_id(TestData.module_response_json_customer_group["id"])
     assert_response_status(TestData.response_status_code, 200)
 
     
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG6TC2_GET_validar_esquema_obtencion_exitosa_de_customer_group_por_id(setup_module):
-    response_json = send_request_of_obtain_customer_group_by_id(TestData.module_response_json["id"])
+def test_CG6TC2_GET_validar_esquema_obtencion_exitosa_de_customer_group_por_id(setup_module_customer_group):
+    response_json = send_request_of_obtain_customer_group_by_id(TestData.module_response_json_customer_group["id"])
     assert_schemas(response_json, SchemaName.get_customer_group.value)
 
     

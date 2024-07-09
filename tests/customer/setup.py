@@ -16,35 +16,35 @@ def teardown_function_remove_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
 
     def teardown():
-        if "id" in TestData.function_response_json:
-            send_request_of_remove_customer(TestData.function_response_json["id"])
+        if "id" in TestData.function_response_json_customer:
+            send_request_of_remove_customer(TestData.function_response_json_customer["id"])
 
     yield TestData.token
     teardown()
 
 
 @pytest.fixture(scope="function")
-def setup_function():
+def setup_function_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
-    TestData.function_response_json = None
+    TestData.function_response_json_customer = None
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
-    TestData.function_response_json = send_request_of_create_a_customer(TestData.random_email,
+    TestData.function_response_json_customer = send_request_of_create_a_customer(TestData.random_email,
                                                                         StaticData.firstname.value,
                                                                         StaticData.lastname.value
                                                                         )
 
     def teardown():
-        if "id" in TestData.function_response_json:
-            send_request_of_remove_customer(TestData.function_response_json["id"])
+        if "id" in TestData.function_response_json_customer:
+            send_request_of_remove_customer(TestData.function_response_json_customer["id"])
     yield TestData.token
     teardown()
 
-@pytest.fixture(scope="module")
-def setup_module_customer_with_account():
+@pytest.fixture(scope="function")
+def setup_function_customer_with_account():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
-    TestData.module_response_json = None
-    TestData.module_response_json = send_request_of_create_a_customer(
+    TestData.function_response_json_customer = None
+    TestData.function_response_json_customer = send_request_of_create_a_customer(
         TestData.random_email
         , StaticData.firstname.value
         , StaticData.lastname.value
@@ -68,7 +68,7 @@ def setup_module_customer_with_account():
     )
 
     def teardown():
-        send_request_of_remove_customer(TestData.module_response_json["id"])
+        send_request_of_remove_customer(TestData.function_response_json_customer["id"])
     yield TestData.token
     teardown()
 
@@ -78,26 +78,26 @@ def setup_module_customer_with_account():
 def setup_function_full_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
-    TestData.function_response_json = None
-    TestData.function_response_json = create_new_customer_with_all_information()
+    TestData.function_response_json_customer = None
+    TestData.function_response_json_customer = create_new_customer_with_all_information()
 
     def teardown():
-        send_request_of_remove_customer(TestData.function_response_json["id"])
+        send_request_of_remove_customer(TestData.function_response_json_customer["id"])
     yield TestData.token
     teardown()
 
 
 @pytest.fixture(scope="module")
-def setup_module():
+def setup_module_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
-    TestData.module_response_json = None
-    TestData.module_response_json = send_request_of_create_a_customer(TestData.random_email,
+    TestData.module_response_json_customer = None
+    TestData.module_response_json_customer = send_request_of_create_a_customer(TestData.random_email,
                                                                         StaticData.firstname.value,
                                                                         StaticData.lastname.value)
 
     def teardown():
-        send_request_of_remove_customer(TestData.module_response_json["id"])
+        send_request_of_remove_customer(TestData.module_response_json_customer["id"])
     yield TestData.token
     teardown()
 
@@ -106,11 +106,11 @@ def setup_module():
 def setup_module_full_customer():
     TestData.token = get_token_login() if TestData.token is None else TestData.token
     TestData.random_email = f"{Utils().get_random_alphanumeric(10)}@gmail.com"
-    TestData.module_response_json = None
-    TestData.module_response_json = create_new_customer_with_all_information()
+    TestData.module_response_json_customer = None
+    TestData.module_response_json_customer = create_new_customer_with_all_information()
 
     def teardown():
-        send_request_of_remove_customer(TestData.module_response_json["id"])
+        send_request_of_remove_customer(TestData.module_response_json_customer["id"])
     yield TestData.token
     teardown()
 
