@@ -1,9 +1,9 @@
 import requests
 
-from src.method.executions import Executions
+from src.request_library.actions import Actions
 
 
-class HTTPRequest(Executions):
+class RequestModule(Actions):
 
     def __init__(self, method_name, url, headers, payload, params):
         self.method_name = method_name

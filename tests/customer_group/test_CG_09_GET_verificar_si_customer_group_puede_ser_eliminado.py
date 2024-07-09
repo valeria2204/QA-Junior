@@ -7,14 +7,16 @@ from src.enums.schema_json_name import SchemaName
 from src.enums.static_data import StaticData
 from src.testdata import TestData
 from tests.conftest import setup_data
-from tests.customer_group.setup import send_request_of_check_if_customer_group_can_be_deleted_with_group_id, setup_function
+from tests.customer_group.setup import send_request_of_check_if_customer_group_can_be_deleted_with_group_id, setup_function_customer_group
+from tests.customer.setup import send_request_of_update_a_customer, setup_function_customer
 from tests.helpers.utils import Utils
 
 
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG9TC1_GET_verificar_si_un_customer_group_no_asignado_a_un_customer_puede_ser_eliminado(setup_data):
+def test_CG9TC1_GET_verificar_si_un_customer_group_predeterminado_no_puede_ser_eliminado(
+        setup_function_customer_group):
     response = send_request_of_check_if_customer_group_can_be_deleted_with_group_id(StaticData.group_id.value, Method.GET.value, TestData.token)
     assert_response_status(TestData.response_status_code, 200)
     assert_equals(response, True)
@@ -38,8 +40,11 @@ def test_CG9TC3_GET_verificar_si_un_customer_group_puede_ser_eliminado_cuando_el
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG9TC4_GET_verificar_si_un_customer_group_asignado_a_un_customer_puede_ser_eliminado(setup_data):
-    response = send_request_of_check_if_customer_group_can_be_deleted_with_group_id(StaticData.second_group_id.value)
+def test_CG9TC4_GET_verificar_si_un_customer_group_asignado_a_un_customer_puede_ser_eliminado(
+        setup_function_customer_group, setup_function_customer):
+    TestData.function_response_json_customer[StaticData.group_id.name] = TestData.function_response_json_customer_group["id"]
+    send_request_of_update_a_customer(TestData.function_response_json_customer["id"], TestData.function_response_json_customer)
+    response = send_request_of_check_if_customer_group_can_be_deleted_with_group_id(TestData.function_response_json_customer_group["id"])
     assert_response_status(TestData.response_status_code, 200)
     assert_equals(response, False)
 

@@ -6,7 +6,7 @@ from src.enums.method import Method
 from src.enums.schema_json_name import SchemaName
 from src.testdata import TestData
 from tests.conftest import setup_data
-from tests.customer_group.setup import setup_module, send_request_of_obtain_customer_groups_by_search_criterias
+from tests.customer_group.setup import setup_module_customer_group, send_request_of_obtain_customer_groups_by_search_criterias
 
 
 @pytest.mark.regression
@@ -39,8 +39,9 @@ def test_schema_verificar_obtencion_exitosa_de_los_customer_groups(setup_data):
 @pytest.mark.smoke
 @pytest.mark.functional
 @pytest.mark.regression
-def test_CG05TC11_GET_verificar_que_el_primer_customer_group_es_encontrado_por_los_criterios_de_busqueda_field_value_condition_type(setup_module):
-    send_request_of_obtain_customer_groups_by_search_criterias(None, None, "id", TestData.module_response_json["id"], "eq")
+def test_CG05TC11_GET_verificar_que_el_primer_customer_group_es_encontrado_por_los_criterios_de_busqueda_field_value_condition_type(
+        setup_module_customer_group):
+    send_request_of_obtain_customer_groups_by_search_criterias(None, None, "id", TestData.module_response_json_customer_group["id"], "eq")
     assert_response_status(TestData.response_status_code, 200)
 
 

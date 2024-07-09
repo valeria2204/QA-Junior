@@ -1,12 +1,15 @@
 import json
 import os
 
-from src.method.method_factory import MethodFactory
+from src.request_library.method_factory import MethodFactory
 
 
 class TestData:
-    module_response_json = None
-    function_response_json = None
+    module_response_json_customer = None
+    module_response_json_customer_group = None
+    function_response_json_customer = None
+    function_response_json_customer_group = None
+    response_status_code = None
 
     __instance = None
 
@@ -17,26 +20,15 @@ class TestData:
     token_no_valid = None
     base_url = None
 
-    response_status_code = None
-    old_password = None
     random_email = None
 
-    def __new__(cls):
-        if cls.__instance is None:
-            cls.__instance = \
-                super(TestData, cls).__new__(cls)
+    request_factory = None
+
 
     @staticmethod
     def request_client(method_name, url, headers=None, payload=None, params=None):
-        if params is None:
-            params = {}
-        if payload is None:
-            payload = {}
-        if headers is None:
-            headers = {}
-        request_factory = MethodFactory()
-        return request_factory.create_request('http_request', method_name, url, headers, payload, params)
-
+        TestData.request_factory = MethodFactory() if TestData.request_factory is None else TestData.request_factory
+        return TestData.request_factory.create_request('http_request', method_name, url, headers, payload, params)
     @staticmethod
     def load_attributes_from_json():
         if TestData.token is None:
