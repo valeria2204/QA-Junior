@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "code": {
+      "type": "string"
+    },
+    "tax_class_id": {
+      "type": "integer"
+    },
+    "tax_class_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "code",
+    "tax_class_id",
+    "tax_class_name"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {}
+    },
+    "search_criteria": {
+      "type": "object",
+      "properties": {
+        "filter_groups": {
+          "type": "array",
+          "items": {}
+        },
+        "page_size": {
+          "type": "number"
+        },
+        "current_page": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "filter_groups",
+        "page_size",
+        "current_page"
+      ]
+    },
+    "total_count": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "items",
+    "search_criteria",
+    "total_count"
+  ]
+}
