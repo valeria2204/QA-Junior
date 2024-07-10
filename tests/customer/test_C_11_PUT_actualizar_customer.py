@@ -301,7 +301,7 @@ def test_C11TC22_PUT_verificar_la_actualizacion_de_customer_con_el_parametro_sto
     response_json = send_request_of_update_a_customer(TestData.function_response_json_customer[StaticData.id.name], TestData.function_response_json_customer)
 
     assert_response_status(TestData.response_status_code, 404)
-    assert_schemas(response_json, SchemaName.response_status_code_404_no_such_entity.value)
+    assert_schemas(response_json, SchemaName.response_status_code_404_request_does_not_match.value)
 
 
 @pytest.mark.functional

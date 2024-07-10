@@ -50,7 +50,7 @@ def test_C9TC4_PUT_validar_esquema_status_code_401_cuando_el_cambio_de_password_
 @pytest.mark.regression
 def test_C9TC5_PUT_verificar_status_code_200_cuando_el_cambio_de_password_de_customer_con_un_parametro_new_password_tiene_mas_de_256_caracteres(
         setup_function_customer_with_account):
-    new_password = Utils.get_random_password(260)
+    new_password = Utils.get_random_password(270)
     send_request_of_update_password_of_a_customer(TestData.function_response_json_customer["id"], new_password, StaticData.password.value)
     assert_response_status(TestData.response_status_code, 400)
 
