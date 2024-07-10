@@ -37,3 +37,4 @@ class StaticData(Enum):
     the_values_type_is_invalid = "The \"{value}\" value's type is invalid. The \"int\" type was expected. Verify and try again."
     value = "{value}"
     customer_10 = 10
+    default_group_id = 0
